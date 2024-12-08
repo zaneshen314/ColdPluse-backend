@@ -70,7 +70,7 @@ create table if not exists concert_schedule
 
 create table if not exists ticket
 (
-    ticket_identifier   int auto_increment
+    id   int auto_increment
         primary key,
     concert_class_id    int         not null,
     concert_schedule_id int         not null,
