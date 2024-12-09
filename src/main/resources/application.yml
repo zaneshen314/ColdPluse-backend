@@ -13,7 +13,7 @@ spring:
     # 数据库索引
     database: 0
     # 密码
-    password: ${REDISPASSWORD}
+    password:
     # 连接超时时间
     timeout: 10s
     lettuce:
@@ -36,7 +36,8 @@ spring:
     hibernate:
       ddl-auto: none
   flyway:
-     baseline-on-migrate: true
+    enabled: true
+    baseline-on-migrate: true
 server:
   port: 7002
 # token配置
