@@ -20,13 +20,10 @@ public class CharityEventService {
 
     private final UserService userService;
 
-    private final UserRepository userRepository;
-
     public CharityEventService(CharityEventRepository charityEventRepository, CharityEventParticipationRepository charityEventParticipationRepository, UserService userService, UserRepository userRepository) {
         this.charityEventRepository = charityEventRepository;
         this.charityEventParticipationRepository = charityEventParticipationRepository;
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
 
