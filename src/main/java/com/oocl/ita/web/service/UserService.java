@@ -25,10 +25,10 @@ public class UserService {
         return userRepository.findByEmail(userName);
     }
 
-    public User updateUserCumulatedPoint(Integer userId, Integer point) {
+    public void updateUserCumulatedPoint(Integer userId, Integer point) {
         User user = userRepository.getById(userId);
         user.setCumulatedPoint(user.getCumulatedPoint() + point);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public Integer selectUserCumulatedPoint(Integer userId) {
