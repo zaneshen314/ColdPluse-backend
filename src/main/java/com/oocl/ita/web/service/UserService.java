@@ -30,4 +30,8 @@ public class UserService {
         user.setCumulatedPoint(user.getCumulatedPoint() + point);
         return userRepository.save(user);
     }
+
+    public Integer selectUserCumulatedPoint(Integer userId) {
+        return userRepository.getById(userId).getCumulatedPoint();
+    }
 }
