@@ -26,7 +26,7 @@ public class CharityEventController {
     }
 
     @GetMapping(params = "eventId")
-    public CharityEventParticipationsResp getCharityEventParticipationByEventId(@PathVariable Integer eventId) {
+    public CharityEventParticipationsResp getCharityEventParticipationByEventId(@RequestParam Integer eventId) {
         return charityEventService.getCharityEventParticipationByCharityEventId(eventId);
     }
 
