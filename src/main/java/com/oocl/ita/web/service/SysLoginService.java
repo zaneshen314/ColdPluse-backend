@@ -1,13 +1,13 @@
 package com.oocl.ita.web.service;
 
 
-import com.oocl.ita.web.repository.SysUserRepository;
 import com.oocl.ita.web.domain.bo.RegisterBody;
 import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
 import com.oocl.ita.web.core.security.domain.LoginUser;
 import com.oocl.ita.web.core.security.service.TokenService;
 import com.oocl.ita.web.common.utils.SecurityUtils;
+import com.oocl.ita.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,7 +36,7 @@ public class SysLoginService
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private SysUserRepository sysUserRepository;
+    private UserRepository sysUserRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
