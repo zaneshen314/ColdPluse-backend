@@ -3,6 +3,7 @@ package com.oocl.ita.web.service;
 import com.oocl.ita.web.core.exception.ConcertInProgressException;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.domain.bo.ConcertClassBody;
+import com.oocl.ita.web.domain.bo.ConcertClassUpdateBody;
 import com.oocl.ita.web.domain.po.ConcertClass;
 import com.oocl.ita.web.domain.po.ConcertSchedule;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
@@ -10,8 +11,6 @@ import com.oocl.ita.web.repository.ConcertClassRepository;
 import com.oocl.ita.web.repository.ConcertScheduleRepository;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class ConcertService {
         if (startDate.before(getCurrentTime())) {
             throw new ConcertInProgressException();
         }
-        ConcertClass concertClass = initConcertClass(concertId, concertClassBody);
+        ConcertClass concertClass = initCreatedConcertClass(concertId, concertClassBody);
         ConcertClass saveConcertClass = concertClassRepository.save(concertClass);
         return buildConcertClassVo(saveConcertClass);
     }
@@ -55,11 +54,11 @@ public class ConcertService {
         return concertClassVo;
     }
 
-    private ConcertClass initConcertClass(Integer concertId, ConcertClassBody concertClassBody) {
+    private ConcertClass initCreatedConcertClass(Integer concertId, ConcertClassBody concertClassBody) {
         ConcertClass concertClass = new ConcertClass();
         concertClass.setClassName(concertClassBody.getClassName());
         concertClass.setCapacity(concertClassBody.getCapacity());
-        concertClass.setPriceInUsd(generatePriceInUsd(concertClassBody));
+        concertClass.setPriceInUsd(generatePriceInUsd(concertClassBody.getCurrency(), concertClassBody.getPrice()));
         concertClass.setPriceInLocalCurr(concertClassBody.getPrice());
         concertClass.setAvailableSeats(0);
         concertClass.setCurrency(concertClass.getCurrency());
@@ -67,13 +66,24 @@ public class ConcertService {
         return concertClass;
     }
 
-    private double generatePriceInUsd(ConcertClassBody concertClassBody) {
-        String currency = concertClassBody.getCurrency();
+    private ConcertClass buildUpdatedConcertClass(ConcertClass concertClass, ConcertClassUpdateBody concertClassBody) {
+        if (concertClassBody.getClassName() != null) {
+            concertClass.setClassName(concertClassBody.getClassName());
+        }
+        if (concertClassBody.getCurrency() != null && concertClassBody.getPrice() != null) {
+            concertClass.setPriceInUsd(generatePriceInUsd(concertClassBody.getCurrency(), concertClassBody.getPrice()));
+            concertClass.setPriceInLocalCurr(concertClassBody.getPrice());
+            concertClass.setCurrency(concertClass.getCurrency());
+        }
+        return concertClass;
+    }
+
+    private double generatePriceInUsd(String currency, double price) {
         return switch (currency) {
-            case "USD" -> concertClassBody.getPrice();
-            case "CNY" -> concertClassBody.getPrice() / 7d;
-            case "HKD" -> concertClassBody.getPrice() / 7.8d;
-            default -> concertClassBody.getPrice() / 6.8d;
+            case "USD" -> price;
+            case "CNY" -> price / 7d;
+            case "HKD" -> price / 7.8d;
+            default -> price / 6.8d;
         };
     }
 
@@ -81,5 +91,12 @@ public class ConcertService {
         return concertClassRepository.findByConcertId(concertId).stream()
                 .map(this::buildConcertClassVo)
                 .toList();
+    }
+
+    public ConcertClassVo updateConcertClass(Integer concertId, Integer classId,
+                                             ConcertClassUpdateBody concertClassBody) {
+        ConcertClass concertClass = concertClassRepository.findById(classId).orElseThrow(() -> new EntityNotExistException("ConcertClass"));
+        ConcertClass updatedConcertClass = concertClassRepository.save(buildUpdatedConcertClass(concertClass, concertClassBody));
+        return buildConcertClassVo(updatedConcertClass);
     }
 }
