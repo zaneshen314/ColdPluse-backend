@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:${MYSQL_URL}
-    username: ${MYSQLUSER}
-    password: ${MYSQLPASSWORD}
+    url: jdbc:$｛{MYSQL_URL}｝
+    username: $｛{MYSQLUSER}｝
+    password: $｛{MYSQLPASSWORD}｝
   # redis 配置
   redis:
     # 地址
