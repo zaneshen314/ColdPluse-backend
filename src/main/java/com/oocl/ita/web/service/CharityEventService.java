@@ -39,7 +39,6 @@ public class CharityEventService {
     }
 
     public CharityEventParticipation registerCharityEvent(Integer userId, Integer charityEventId, boolean claimPoint) {
-        System.out.println(userRepository.existsById(userId));
         return charityEventParticipationRepository.save(new CharityEventParticipation(userId, charityEventId, false, false, false, claimPoint));
     }
 

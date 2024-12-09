@@ -6,7 +6,6 @@ import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
 import com.oocl.ita.web.domain.vo.CharityEventParticipationsResp;
 import com.oocl.ita.web.service.CharityEventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
