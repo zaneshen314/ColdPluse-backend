@@ -21,6 +21,11 @@ public class RegisterBody {
      */
     private String password;
 
+    /**
+     * 验证码
+     */
+    private String code;
+
     public User toEntity() {
         User user = new User();
         user.setName(name);
