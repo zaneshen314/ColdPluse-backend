@@ -12,4 +12,5 @@ public interface CharityEventParticipationRepository extends JpaRepository<Chari
 
     public List<CharityEventParticipation> findAllByUserId(Integer userId);
 
+    public List<CharityEventParticipation> findAllByCharityEventId(Integer charityEventId);
 }
