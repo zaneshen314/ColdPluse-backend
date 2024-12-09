@@ -2,6 +2,7 @@ package com.oocl.ita.web.controller;
 
 import com.oocl.ita.web.domain.bo.LoginBody;
 import com.oocl.ita.web.domain.bo.RegisterBody;
+import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.domain.vo.RespBean;
 import com.oocl.ita.web.core.redis.RedisCache;
 import com.oocl.ita.web.core.security.service.TokenService;
@@ -18,14 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class SysLoginController {
-    @Autowired
-    private SysLoginService loginService;
 
-    @Autowired
-    private RedisCache redisCache;
+    private final SysLoginService loginService;
 
-    @Autowired
-    private TokenService tokenService;
+    public SysLoginController(SysLoginService loginService) {
+        this.loginService = loginService;
+    }
 
     /**
      * 登录方法
@@ -34,20 +33,10 @@ public class SysLoginController {
      * @return 结果
      */
     @PostMapping("/login")
-    public RespBean login(@RequestBody LoginBody loginBody) {
+    public RespBean<String> login(@RequestBody LoginBody loginBody) {
         // 生成令牌
         String token = loginService.login(loginBody.getEmail(), loginBody.getPassword());
         return RespBean.success(token);
-    }
-
-    /**
-     * 获取登录者信息
-     *
-     * @return 登录者信息
-     */
-    @GetMapping("/getUserInfo")
-    public RespBean login() {
-        return RespBean.success(loginService.getLoginUser());
     }
 
     /**
@@ -56,10 +45,21 @@ public class SysLoginController {
      * @return 登录者信息
      */
     @PostMapping("/register")
-    public RespBean register(@RequestBody RegisterBody registerBody) {
+    public RespBean<String> register(@RequestBody RegisterBody registerBody) {
         loginService.register(registerBody);
         return RespBean.success();
     }
+
+    /**
+     * 获取登录者信息
+     *
+     * @return 登录者信息
+     */
+    @GetMapping("/userinfo")
+    public RespBean<User> login() {
+        return RespBean.success(loginService.getLoginUser());
+    }
+
 
 
 }
