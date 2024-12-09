@@ -25,4 +25,6 @@ public class ConcertClass {
 
     private Integer availableSeats;
 
+    private String currency;
+
 }
