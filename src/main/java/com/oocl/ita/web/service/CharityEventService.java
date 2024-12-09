@@ -16,9 +16,12 @@ public class CharityEventService {
 
     private CharityEventParticipationRepository charityEventParticipationRepository;
 
-    public CharityEventService(CharityEventRepository charityEventRepository, CharityEventParticipationRepository charityEventParticipationRepository) {
+    private UserService userService;
+
+    public CharityEventService(CharityEventRepository charityEventRepository, CharityEventParticipationRepository charityEventParticipationRepository, UserService userService) {
         this.charityEventRepository = charityEventRepository;
         this.charityEventParticipationRepository = charityEventParticipationRepository;
+        this.userService = userService;
     }
 
 
@@ -43,6 +46,7 @@ public class CharityEventService {
     public CharityEventParticipation finishCharityEventParticipation(Integer userId, Integer charityEventId) {
         CharityEventParticipation charityEventParticipation = charityEventParticipationRepository.getById(new CharityEventParticipationKey(userId, charityEventId));
         charityEventParticipation.setFinished(true);
+        userService.updateUserCumulatedPoint(userId, charityEventRepository.getById(charityEventId).getPoint());
         return charityEventParticipationRepository.save(charityEventParticipation);
     }
 

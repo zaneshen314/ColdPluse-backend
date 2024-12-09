@@ -52,7 +52,7 @@ public class User implements Serializable {
     @Column(columnDefinition = "char(1)")
     private String status;
 
-    private Integer points;
+    private Integer cumulatedPoint;
 
     public User() {
 
