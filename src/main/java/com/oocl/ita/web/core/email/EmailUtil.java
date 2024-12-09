@@ -1,6 +1,8 @@
 package com.oocl.ita.web.core.email;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -44,6 +46,9 @@ public class EmailUtil {
             byte[] input = jsonInputString.toString().getBytes(StandardCharsets.UTF_8);
             os.write(input, 0, input.length);
         }
+
+         connection.getResponseCode();
+
     }
 
     public static void main(String[] args) {
