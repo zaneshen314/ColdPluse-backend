@@ -9,26 +9,26 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RespBean {
+public class RespBean<T> {
 
     private long code;
     private String message;
-    private Object data;
+    private T data;
 
     /**
      * 成功返回结果
      * @return
      */
-    public static RespBean success() {
-        return new RespBean(200L, "操作成功", null);
+    public static <T> RespBean<T> success() {
+        return new RespBean<>(200L, "操作成功", null);
     }
 
     /**
      * 成功返回结果
      * @return
      */
-    public static RespBean success(Object data) {
-        return new RespBean(200L, "操作成功", data);
+    public static <T> RespBean<T> success(T data) {
+        return new RespBean<>(200L, "操作成功", data);
     }
 
     /**
@@ -37,8 +37,8 @@ public class RespBean {
      * @param message
      * @return
      */
-    public static RespBean success(String message, Object data) {
-        return new RespBean(200L, message, data);
+    public static <T> RespBean<T> success(String message, T data) {
+        return new RespBean<>(200L, message, data);
     }
 
 
@@ -48,8 +48,8 @@ public class RespBean {
      * @param message
      * @return
      */
-    public static RespBean error(String message) {
-        return new RespBean(500L, message, null);
+    public static <T> RespBean<T> error(String message) {
+        return new RespBean<>(500L, message, null);
     }
 
     /**
@@ -59,8 +59,8 @@ public class RespBean {
      * @param data
      * @return
      */
-    public static RespBean error(String message, Object data) {
-        return new RespBean(500L, message, data);
+    public static <T> RespBean<T> error(String message, T data) {
+        return new RespBean<>(500L, message, data);
     }
 
     /**
@@ -70,11 +70,11 @@ public class RespBean {
      * @param code
      * @return
      */
-    public static RespBean error(int code, String message) {
-        return new RespBean(code, message, null);
+    public static <T> RespBean<T> error(int code, String message) {
+        return new RespBean<>(code, message, null);
     }
 
-    public RespBean(long code, String message, Object data) {
+    public RespBean(long code, String message, T data) {
         this.code = code;
         this.message = message;
         this.data = data;
