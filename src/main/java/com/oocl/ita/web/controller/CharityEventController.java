@@ -1,5 +1,7 @@
 package com.oocl.ita.web.controller;
 
+import com.oocl.ita.web.domain.bo.CharityEventRegBody;
+import com.oocl.ita.web.domain.bo.CharityEventUpdateBody;
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
 import com.oocl.ita.web.domain.vo.CharityEventParticipationsResp;
@@ -35,23 +37,23 @@ public class CharityEventController {
     }
 
     @PostMapping("/register")
-    public CharityEventParticipation registerCharityEvent(@RequestParam Integer userId, @RequestParam Integer charityEventId, @RequestParam boolean claimPoint) {
-        return charityEventService.registerCharityEvent(userId, charityEventId, claimPoint);
+    public CharityEventParticipation registerCharityEvent(@RequestBody CharityEventRegBody charityEventRegBody) {
+        return charityEventService.registerCharityEvent(charityEventRegBody.getUserId(), charityEventRegBody.getCharityEventId(), charityEventRegBody.isClaimPoint());
     }
 
     @PostMapping("/enroll")
-    public CharityEventParticipation enrollCharityEventParticipation(@RequestParam Integer userId, @RequestParam Integer charityEventId) {
-        return charityEventService.enrollCharityEventParticipation(userId, charityEventId);
+    public CharityEventParticipation enrollCharityEventParticipation(@RequestBody CharityEventUpdateBody charityEventUpdateBody) {
+        return charityEventService.enrollCharityEventParticipation(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId());
     }
 
     @PostMapping("/finish")
-    public CharityEventParticipation finishCharityEventParticipation(@RequestParam Integer userId, @RequestParam Integer charityEventId) {
-        return charityEventService.finishCharityEventParticipation(userId, charityEventId);
+    public CharityEventParticipation finishCharityEventParticipation(@RequestBody CharityEventUpdateBody charityEventUpdateBody) {
+        return charityEventService.finishCharityEventParticipation(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId());
     }
 
     @PostMapping("/close")
-    public CharityEventParticipation closeCharityEventParticipation(@RequestParam Integer userId, @RequestParam Integer charityEventId) {
-        return charityEventService.closeCharityEventParticipation(userId, charityEventId);
+    public CharityEventParticipation closeCharityEventParticipation(@RequestBody CharityEventUpdateBody charityEventUpdateBody) {
+        return charityEventService.closeCharityEventParticipation(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId());
     }
 
 }

@@ -1,10 +1,8 @@
 package com.oocl.ita.web.domain.po;
 
+import com.oocl.ita.web.domain.po.key.CharityEventParticipationKey;
 import lombok.Data;
-
 import javax.persistence.*;
-
-import com.oocl.ita.web.domain.po.CharityEventParticipationKey;
 
 @Entity
 @Data

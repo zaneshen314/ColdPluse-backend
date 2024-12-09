@@ -1,7 +1,7 @@
 package com.oocl.ita.web.repository;
 
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
-import com.oocl.ita.web.domain.po.CharityEventParticipationKey;
+import com.oocl.ita.web.domain.po.key.CharityEventParticipationKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
