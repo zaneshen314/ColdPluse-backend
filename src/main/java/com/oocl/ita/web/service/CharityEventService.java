@@ -30,13 +30,25 @@ public class CharityEventService {
         return charityEventParticipationRepository.findAllByUserId(userId);
     }
 
-    public CharityEventParticipation registerCharityEvent(Integer userId, Integer charityEventId) {
-        return charityEventParticipationRepository.save(new CharityEventParticipation(userId, charityEventId, false, false, false, false));
+    public CharityEventParticipation registerCharityEvent(Integer userId, Integer charityEventId, boolean claimPoint) {
+        return charityEventParticipationRepository.save(new CharityEventParticipation(userId, charityEventId, false, false, false, claimPoint));
     }
 
     public CharityEventParticipation enrollCharityEventParticipation(Integer userId, Integer charityEventId) {
         CharityEventParticipation charityEventParticipation = charityEventParticipationRepository.getById(new CharityEventParticipationKey(userId, charityEventId));
         charityEventParticipation.setEnrolled(true);
+        return charityEventParticipationRepository.save(charityEventParticipation);
+    }
+
+    public CharityEventParticipation finishCharityEventParticipation(Integer userId, Integer charityEventId) {
+        CharityEventParticipation charityEventParticipation = charityEventParticipationRepository.getById(new CharityEventParticipationKey(userId, charityEventId));
+        charityEventParticipation.setFinished(true);
+        return charityEventParticipationRepository.save(charityEventParticipation);
+    }
+
+    public CharityEventParticipation closeCharityEventParticipation(Integer userId, Integer charityEventId) {
+        CharityEventParticipation charityEventParticipation = charityEventParticipationRepository.getById(new CharityEventParticipationKey(userId, charityEventId));
+        charityEventParticipation.setClosed(true);
         return charityEventParticipationRepository.save(charityEventParticipation);
     }
 
