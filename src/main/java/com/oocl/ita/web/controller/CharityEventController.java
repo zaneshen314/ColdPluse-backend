@@ -27,7 +27,9 @@ public class CharityEventController {
 
     @GetMapping(params = "eventId")
     public CharityEventParticipationsResp getCharityEventParticipationByEventId(@RequestParam Integer eventId) {
-        return charityEventService.getCharityEventParticipationByCharityEventId(eventId);
+        CharityEvent charityEvent = charityEventService.getById(eventId);
+        List<CharityEventParticipation> charityEventParticipations = charityEventService.getCharityEventParticipationByCharityEventId(eventId);
+        return new CharityEventParticipationsResp(charityEvent.getId(), charityEvent.getName(), charityEventParticipations);
     }
 
     @PostMapping
