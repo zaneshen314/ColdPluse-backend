@@ -12,16 +12,13 @@ create table if not exists venue
     state    varchar(255) not null
 );
 
-create table if not exists sys_user
+create table if not exists user
 (
-    `user_id` char(19) NOT NULL,
-    `nick_name` varchar(30) NOT NULL,
-    `email` varchar(50)  NOT NULL,
-    `phonenumber` varchar(11)  ,
-    `sex` char(1) ,
-    `password` varchar(100) NOT NULL,
-    `status` char(1) NULL DEFAULT '0',
-    PRIMARY KEY (`user_id`) USING BTREE
+    id       int auto_increment
+        primary key,
+    username varchar(64)  not null,
+    password varchar(255) not null,
+    email    varchar(512) not null
 );
 
 create table if not exists concert
