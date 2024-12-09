@@ -31,12 +31,6 @@ public class GlobalExceptionHandler
         return RespBean.error(CoreErrorResponse.EMAIL_EXISTS_ERROR.getCode(), CoreErrorResponse.EMAIL_EXISTS_ERROR.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public RespBean<String> handleException(Exception e)
-    {
-        return RespBean.error(HttpStatus.ERROR, e.getMessage());
-    }
-
     @ExceptionHandler(EntityNotExistException.class)
     public RespBean<String> handleEntityNotExistException(EntityNotExistException e)
     {
