@@ -26,13 +26,13 @@ public class CharityEventController {
         return charityEventService.getAllCharityEvent();
     }
 
-    @GetMapping("/participation/{userId}")
-    public List<CharityEventParticipation> getCharityEventParticipationByUserId(@PathVariable Integer userId) {
+    @GetMapping("/participation/user")
+    public List<CharityEventParticipation> getCharityEventParticipationByUserId(@RequestParam Integer userId) {
         return charityEventService.getCharityEventParticipationByUserid(userId);
     }
 
-    @GetMapping("/participation/{eventId}")
-    public CharityEventParticipationsResp getCharityEventParticipationByEventId(@PathVariable Integer eventId) {
+    @GetMapping("/participation/event")
+    public CharityEventParticipationsResp getCharityEventParticipationByEventId(@RequestParam Integer eventId) {
         return charityEventService.getCharityEventParticipationByCharityEventId(eventId);
     }
 
