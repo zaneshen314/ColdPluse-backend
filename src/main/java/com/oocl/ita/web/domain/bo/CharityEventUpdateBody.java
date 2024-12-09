@@ -1,9 +1,12 @@
 package com.oocl.ita.web.domain.bo;
 
+import com.oocl.ita.web.CharityEventParticipationStatus;
+
 public class CharityEventUpdateBody {
 
     private Integer userId;
     private Integer charityEventId;
+    private CharityEventParticipationStatus status;
 
     public CharityEventUpdateBody(Integer userId, Integer charityEventId) {
         this.userId = userId;
@@ -29,4 +32,11 @@ public class CharityEventUpdateBody {
         this.charityEventId = charityEventId;
     }
 
+    public CharityEventParticipationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CharityEventParticipationStatus status) {
+        this.status = status;
+    }
 }

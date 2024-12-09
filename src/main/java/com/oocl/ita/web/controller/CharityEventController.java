@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/charity-event")
+@RequestMapping("/charity-events")
 public class CharityEventController {
 
     private final CharityEventService charityEventService;
@@ -25,34 +25,19 @@ public class CharityEventController {
         return charityEventService.getAllCharityEvent();
     }
 
-    @GetMapping("/participation/user")
-    public List<CharityEventParticipation> getCharityEventParticipationByUserId(@RequestParam Integer userId) {
-        return charityEventService.getCharityEventParticipationByUserid(userId);
-    }
-
-    @GetMapping("/participation/event")
-    public CharityEventParticipationsResp getCharityEventParticipationByEventId(@RequestParam Integer eventId) {
+    @GetMapping(params = "eventId")
+    public CharityEventParticipationsResp getCharityEventParticipationByEventId(@PathVariable Integer eventId) {
         return charityEventService.getCharityEventParticipationByCharityEventId(eventId);
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public CharityEventParticipation registerCharityEvent(@RequestBody CharityEventRegBody charityEventRegBody) {
         return charityEventService.registerCharityEvent(charityEventRegBody.getUserId(), charityEventRegBody.getCharityEventId(), charityEventRegBody.isClaimPoint());
     }
 
-    @PostMapping("/enroll")
-    public CharityEventParticipation enrollCharityEventParticipation(@RequestBody CharityEventUpdateBody charityEventUpdateBody) {
-        return charityEventService.enrollCharityEventParticipation(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId());
-    }
-
-    @PostMapping("/finish")
-    public CharityEventParticipation finishCharityEventParticipation(@RequestBody CharityEventUpdateBody charityEventUpdateBody) {
-        return charityEventService.finishCharityEventParticipation(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId());
-    }
-
-    @PostMapping("/close")
-    public CharityEventParticipation closeCharityEventParticipation(@RequestBody CharityEventUpdateBody charityEventUpdateBody) {
-        return charityEventService.closeCharityEventParticipation(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId());
+    @PutMapping("/status")
+    public CharityEventParticipation updateCharityEventParticipationStatus(@RequestBody CharityEventUpdateBody charityEventUpdateBody) {
+        return charityEventService.updateCharityEventParticipationStatus(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId(), charityEventUpdateBody.getStatus());
     }
 
 }
