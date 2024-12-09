@@ -16,11 +16,11 @@ public class CharityEventService {
 
     private final CharityEventRepository charityEventRepository;
 
-    private CharityEventParticipationRepository charityEventParticipationRepository;
+    private final CharityEventParticipationRepository charityEventParticipationRepository;
 
-    private UserService userService;
+    private final UserService userService;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public CharityEventService(CharityEventRepository charityEventRepository, CharityEventParticipationRepository charityEventParticipationRepository, UserService userService, UserRepository userRepository) {
         this.charityEventRepository = charityEventRepository;
