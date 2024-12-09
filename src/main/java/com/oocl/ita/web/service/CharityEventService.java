@@ -2,10 +2,11 @@ package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
-import com.oocl.ita.web.domain.po.CharityEventParticipationKey;
+import com.oocl.ita.web.domain.po.key.CharityEventParticipationKey;
 import com.oocl.ita.web.domain.vo.CharityEventParticipationsResp;
 import com.oocl.ita.web.repository.CharityEventParticipationRepository;
 import com.oocl.ita.web.repository.CharityEventRepository;
+import com.oocl.ita.web.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,17 @@ public class CharityEventService {
 
     private final CharityEventRepository charityEventRepository;
 
-    private CharityEventParticipationRepository charityEventParticipationRepository;
+    private final CharityEventParticipationRepository charityEventParticipationRepository;
 
-    private UserService userService;
+    private final UserService userService;
 
-    public CharityEventService(CharityEventRepository charityEventRepository, CharityEventParticipationRepository charityEventParticipationRepository, UserService userService) {
+    private final UserRepository userRepository;
+
+    public CharityEventService(CharityEventRepository charityEventRepository, CharityEventParticipationRepository charityEventParticipationRepository, UserService userService, UserRepository userRepository) {
         this.charityEventRepository = charityEventRepository;
         this.charityEventParticipationRepository = charityEventParticipationRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
@@ -35,6 +39,7 @@ public class CharityEventService {
     }
 
     public CharityEventParticipation registerCharityEvent(Integer userId, Integer charityEventId, boolean claimPoint) {
+        System.out.println(userRepository.existsById(userId));
         return charityEventParticipationRepository.save(new CharityEventParticipation(userId, charityEventId, false, false, false, claimPoint));
     }
 
