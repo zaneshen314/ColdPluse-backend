@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/concert")
+@RequestMapping("/concerts")
 public class ConcertController {
 
     private ConcertService concertService;
@@ -18,14 +18,14 @@ public class ConcertController {
         this.concertService = concertService;
     }
 
-    @PostMapping("/concertClasses")
-    public RespBean<ConcertClassVo> addConcertClass(@RequestBody ConcertClassBody concertClassBody) {
-        return RespBean.success(concertService.addConcertClass(concertClassBody));
+    @PostMapping("/{id}/classes")
+    public RespBean<ConcertClassVo> addConcertClass(@PathVariable Integer id, @RequestBody ConcertClassBody concertClassBody) {
+        return RespBean.success(concertService.addConcertClass(id, concertClassBody));
     }
 
-    @GetMapping("/concertClasses")
-    public RespBean<List<ConcertClassVo>> getConcertClasses() {
-        return RespBean.success(concertService.listConcertClasses());
+    @GetMapping("/{id}/classes")
+    public RespBean<List<ConcertClassVo>> getConcertClasses(@PathVariable Integer id) {
+        return RespBean.success(concertService.listConcertClasses(id));
     }
 
 }

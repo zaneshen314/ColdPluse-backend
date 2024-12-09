@@ -10,4 +10,5 @@ public class ConcertClassVo {
     private Double price;
     private Integer capacity;
     private Integer availableSeats;
+    private Integer concertId;
 }
