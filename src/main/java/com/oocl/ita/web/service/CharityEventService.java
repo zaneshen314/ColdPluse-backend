@@ -2,9 +2,9 @@ package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
+import com.oocl.ita.web.domain.po.CharityEventParticipationKey;
 import com.oocl.ita.web.repository.CharityEventParticipationRepository;
 import com.oocl.ita.web.repository.CharityEventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +30,15 @@ public class CharityEventService {
         return charityEventParticipationRepository.findAllByUserId(userId);
     }
 
+    public CharityEventParticipation registerCharityEvent(Integer userId, Integer charityEventId) {
+        return charityEventParticipationRepository.save(new CharityEventParticipation(userId, charityEventId, false, false, false, false));
+    }
+
+    public CharityEventParticipation enrollCharityEventParticipation(Integer userId, Integer charityEventId) {
+        CharityEventParticipation charityEventParticipation = charityEventParticipationRepository.getById(new CharityEventParticipationKey(userId, charityEventId));
+        charityEventParticipation.setEnrolled(true);
+        return charityEventParticipationRepository.save(charityEventParticipation);
+    }
 
 
 }
