@@ -2,19 +2,20 @@ package com.oocl.ita.web.domain.po;
 
 import lombok.Data;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.oocl.ita.web.domain.po.CharityEventParticipationKey;
 
 @Entity
 @Data
 @Table
+@IdClass(CharityEventParticipationKey.class)
 public class CharityEventParticipation {
 
-    @EmbeddedId
-    private CharityEventParticipationKey id;
+    @Id
+    private Integer userId;
+    @Id
+    private Integer charityEventId;
 
     private boolean enrolled;
     private boolean finished;
@@ -24,7 +25,8 @@ public class CharityEventParticipation {
     public CharityEventParticipation() {}
 
     public CharityEventParticipation(Integer userId, Integer charityEventId, boolean enrolled, boolean finished, boolean closed, boolean claimPoint) {
-        this.id = new CharityEventParticipationKey(userId, charityEventId);
+        this.userId = userId;
+        this.charityEventId = charityEventId;
         this.enrolled = enrolled;
         this.finished = finished;
         this.closed = closed;
