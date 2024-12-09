@@ -1,8 +1,12 @@
 package com.oocl.ita.web.domain.po;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Table
+@Data
 public class Venue {
 
     @Id
