@@ -1,7 +1,7 @@
 package com.oocl.ita.web.core.security.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oocl.ita.web.domain.po.SysUser;
+import com.oocl.ita.web.domain.po.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,7 +19,7 @@ public class LoginUser implements UserDetails
     /**
      * 用户ID
      */
-    private String userId;
+    private Integer userId;
 
     /**
      * 用户唯一标识
@@ -39,14 +39,14 @@ public class LoginUser implements UserDetails
     /**
      * 用户信息
      */
-    private SysUser user;
+    private User user;
 
-    public String getUserId()
+    public Integer getUserId()
     {
         return userId;
     }
 
-    public void setUserId(String userId)
+    public void setUserId(Integer userId)
     {
         this.userId = userId;
     }
@@ -65,12 +65,12 @@ public class LoginUser implements UserDetails
     {
     }
 
-    public LoginUser(SysUser user)
+    public LoginUser(User user)
     {
         this.user = user;
     }
 
-    public LoginUser(String userId, SysUser user)
+    public LoginUser(Integer userId, User user)
     {
         this.userId = userId;
         this.user = user;
@@ -155,12 +155,12 @@ public class LoginUser implements UserDetails
         this.expireTime = expireTime;
     }
 
-    public SysUser getUser()
+    public User getUser()
     {
         return user;
     }
 
-    public void setUser(SysUser user)
+    public void setUser(User user)
     {
         this.user = user;
     }

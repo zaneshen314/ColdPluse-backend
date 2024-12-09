@@ -3,7 +3,7 @@ package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.repository.SysUserRepository;
 import com.oocl.ita.web.domain.bo.RegisterBody;
-import com.oocl.ita.web.domain.po.SysUser;
+import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
 import com.oocl.ita.web.core.security.domain.LoginUser;
 import com.oocl.ita.web.core.security.service.TokenService;
@@ -73,8 +73,8 @@ public class SysLoginService
     /**
      * 获取登录用户信息
      */
-    public SysUser getLoginUser() {
-        String userId = SecurityUtils.getUserId();
+    public User getLoginUser() {
+        Integer userId = SecurityUtils.getUserId();
         return sysUserRepository.getById(userId);
     }
 
@@ -87,11 +87,9 @@ public class SysLoginService
     public void register(RegisterBody registerBody) {
         String email = registerBody.getEmail();
         // 校验邮箱是否存在
-        List<SysUser> sysUserList = sysUserRepository.findByEmail(email);
-        if (CollectionUtils.isEmpty(sysUserList)) {
-            SysUser entity = registerBody.toEntity();
-            String uuid = UUID.randomUUID().toString();
-            entity.setUserId(uuid.substring(0, 19)); // TODO: 这里生成的用户id我暂时这样生成uuid的前19位，或许你有更好的方法生成
+        List<User> userList = sysUserRepository.findByEmail(email);
+        if (CollectionUtils.isEmpty(userList)) {
+            User entity = registerBody.toEntity();
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
             sysUserRepository.save(entity);
         } else {
