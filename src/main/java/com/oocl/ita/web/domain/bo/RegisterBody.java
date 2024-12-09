@@ -27,6 +27,7 @@ public class RegisterBody {
         user.setEmail(email);
         user.setPassword(password);
         user.setStatus("0");
+        user.setCumulatedPoint(0);
         return user;
     }
 }

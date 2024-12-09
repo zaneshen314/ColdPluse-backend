@@ -1,0 +1,24 @@
+### login
+POST http://localhost:7002/login
+Content-Type: application/json
+
+{
+  "email": "test",
+  "password": "test"
+}
+
+### register
+POST http://localhost:7002/register
+Content-Type: application/json
+
+{
+  "name": "test",
+  "email": "test",
+  "password": "test"
+}
+
+### getUserInfo
+GET http://localhost:7002/getUserInfo
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjAzM2U3NjAxLWE4YWUtNDljYS04MWQ3LTZjNjc1NzBlMzllYyJ9.6pmDxmyT1J-XDvrqHW4eJV-9pLSAnBMaHo9npOlRlAj-QkwBaeRACVB35f5Pmmmt8Bz2E_ninknChWZhaXkPEw
+

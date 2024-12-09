@@ -45,7 +45,7 @@ public class SysLoginController {
      *
      * @return 登录者信息
      */
-    @GetMapping("/getInfo")
+    @GetMapping("/getUserInfo")
     public RespBean login() {
         return RespBean.success(loginService.getLoginUser());
     }
