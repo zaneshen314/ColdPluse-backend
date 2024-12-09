@@ -6,6 +6,8 @@ import com.oocl.ita.web.domain.vo.ConcertClassVo;
 import com.oocl.ita.web.repository.ConcertClassRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ConcertService {
 
@@ -21,13 +23,13 @@ public class ConcertService {
         return buildConcertClassVo(saveConcertClass);
     }
 
-    private ConcertClassVo buildConcertClassVo(ConcertClass saveConcertClass) {
+    private ConcertClassVo buildConcertClassVo(ConcertClass concertClass) {
         ConcertClassVo concertClassVo = new ConcertClassVo();
-        concertClassVo.setId(saveConcertClass.getId());
-        concertClassVo.setClassName(saveConcertClass.getClassName());
-        concertClassVo.setCapacity(saveConcertClass.getCapacity());
-        concertClassVo.setAvailableSeats(saveConcertClass.getAvailableSeats());
-        concertClassVo.setPrice(saveConcertClass.getPriceInLocalCurr());
+        concertClassVo.setId(concertClass.getId());
+        concertClassVo.setClassName(concertClass.getClassName());
+        concertClassVo.setCapacity(concertClass.getCapacity());
+        concertClassVo.setAvailableSeats(concertClass.getAvailableSeats());
+        concertClassVo.setPrice(concertClass.getPriceInLocalCurr());
         return concertClassVo;
     }
 
@@ -51,5 +53,11 @@ public class ConcertService {
             case "HKD" -> concertClassBody.getPrice() / 7.8d;
             default -> concertClassBody.getPrice() / 6.8d;
         };
+    }
+
+    public List<ConcertClassVo> listConcertClasses() {
+        return concertClassRepository.findAll().stream()
+                .map(this::buildConcertClassVo)
+                .toList();
     }
 }
