@@ -1,7 +1,3 @@
-create database if not exists coldpulse;
-
-use coldpulse;
-
 create table if not exists venue
 (
     id       int auto_increment

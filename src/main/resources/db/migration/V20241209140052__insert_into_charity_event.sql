@@ -1,0 +1,2 @@
+INSERT INTO charity_event (name, start_time, duration, point, concert_id, current_enrolled, suggested_participation_size, location, description)
+VALUES ('Collecting plastic bags in beach', '2023-11-01 10:00:00', 120, 10, NULL, 0, 50, 'Beach', 'A charity event focused on collecting plastic bags from the beach.');
