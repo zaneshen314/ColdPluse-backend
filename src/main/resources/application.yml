@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:$｛{MYSQL_URL}｝
-    username: $｛{MYSQLUSER}｝
-    password: $｛{MYSQLPASSWORD}｝
+    url: jdbc:$｛{ MYSQL_URL }｝
+    username: $｛{ MYSQLUSER }｝
+    password: $｛{ MYSQLPASSWORD }｝
   # redis 配置
   redis:
     # 地址
-    host: $｛{REDISHOST}｝
+    host: $｛{ REDISHOST }｝
     # 端口，默认为6379
     port: 6379
     # 数据库索引
