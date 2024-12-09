@@ -1,6 +1,6 @@
 package com.oocl.ita.web.core.security.service;
 
-import com.oocl.ita.web.domain.po.SysUser;
+import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
 import com.oocl.ita.web.core.security.domain.LoginUser;
 import com.oocl.ita.web.service.ISysUserService;
@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException
     {
-        List<SysUser> user = userService.selectUserByEmail(email);
+        List<User> user = userService.selectUserByEmail(email);
         if (CollectionUtils.isEmpty(user))
         {
             log.info("登录用户：{} 不存在.", email);
@@ -47,8 +47,8 @@ public class UserDetailsServiceImpl implements UserDetailsService
         return createLoginUser(user.get(0));
     }
 
-    public UserDetails createLoginUser(SysUser user)
+    public UserDetails createLoginUser(User user)
     {
-        return new LoginUser(user.getUserId(), user);
+        return new LoginUser(user.getId(), user);
     }
 }

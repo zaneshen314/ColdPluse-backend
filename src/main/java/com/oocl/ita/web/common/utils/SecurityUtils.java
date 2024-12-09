@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Objects;
+
 /**
  * 安全服务工具类
  * 
@@ -16,11 +18,11 @@ public class SecurityUtils
     /**
      * 用户ID
      **/
-    public static String getUserId()
+    public static Integer getUserId()
     {
         try
         {
-            return getLoginUser().getUserId();
+            return Objects.requireNonNull(getLoginUser()).getUserId();
         }
         catch (Exception e)
         {

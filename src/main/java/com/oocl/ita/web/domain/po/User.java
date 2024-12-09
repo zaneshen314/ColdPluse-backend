@@ -7,6 +7,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 /**
@@ -16,40 +17,28 @@ import javax.persistence.*;
  */
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
-@Table(name = "sys_user")
+@Table(name = "user")
 @Data
 //@GenericGenerator(name = "uuid2", strategy = "com.common.utils.IDUtils")
-public class SysUser {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
      */
     @Id
-    @Column(nullable = false, length = 19, columnDefinition = "char")
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     /**
      * 用户昵称
      */
-    private String nickName;
+    private String name;
 
     /**
      * 用户邮箱
      */
     private String email;
-
-    /**
-     * 手机号码
-     */
-    private String phonenumber;
-
-    /**
-     * 用户性别
-     */
-    @Column(columnDefinition = "char(1)")
-    private String sex;
 
     /**
      * 密码
@@ -63,7 +52,9 @@ public class SysUser {
     @Column(columnDefinition = "char(1)")
     private String status;
 
-    public SysUser() {
+    private Integer points;
+
+    public User() {
 
     }
 
@@ -76,18 +67,5 @@ public class SysUser {
     @JsonProperty
     public String getPassword() {
         return password;
-    }
-
-    @Override
-    public String toString() {
-        return "SysUser{" +
-                "userId='" + userId + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", email='" + email + '\'' +
-                ", phonenumber='" + phonenumber + '\'' +
-                ", sex='" + sex + '\'' +
-                ", password='" + password + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }
