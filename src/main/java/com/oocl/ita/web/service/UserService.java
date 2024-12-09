@@ -4,6 +4,8 @@ import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -11,6 +13,16 @@ public class UserService {
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    /**
+     * 通过用户名查询用户
+     *
+     * @param userName 用户名
+     * @return 用户对象信息
+     */
+    public List<User> selectUserByEmail(String userName) {
+        return userRepository.findByEmail(userName);
     }
 
     public User updateUserCumulatedPoint(Integer userId, Integer point) {
