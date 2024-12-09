@@ -38,10 +38,6 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:${MYSQL_URL}
-    user: ${MYSQLUSER}
-    password: ${MYSQLPASSWORD}
 server:
   port: 7002
 # token配置
