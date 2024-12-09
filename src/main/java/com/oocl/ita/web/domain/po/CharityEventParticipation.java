@@ -1,7 +1,14 @@
 package com.oocl.ita.web.domain.po;
 
-import javax.persistence.Id;
+import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Data
+@Table
 public class CharityEventParticipation {
 
     @Id
