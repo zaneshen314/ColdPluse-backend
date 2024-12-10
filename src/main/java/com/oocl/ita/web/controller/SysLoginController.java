@@ -43,7 +43,7 @@ public class SysLoginController {
      */
     @PostMapping("/sendEmail")
     public RespBean<String> sendEmail(@RequestBody SendEmailBody sendEmailBody) {
-        loginService.sendEmail(sendEmailBody);
+        loginService.sendRegisterEmail(sendEmailBody);
         return RespBean.success();
     }
 
