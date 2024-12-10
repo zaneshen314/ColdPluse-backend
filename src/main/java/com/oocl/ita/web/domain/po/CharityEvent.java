@@ -33,4 +33,6 @@ public class CharityEvent {
 
     private String description;
 
+    private String ImgUrl;
+
 }

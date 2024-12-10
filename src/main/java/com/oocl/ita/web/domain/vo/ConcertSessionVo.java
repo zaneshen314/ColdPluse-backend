@@ -11,4 +11,5 @@ public class ConcertSessionVo {
     private String start_time;
     private String venue;
     private Long duration;
+    private String ImgUrl;
 }

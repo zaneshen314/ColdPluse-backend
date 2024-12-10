@@ -132,6 +132,7 @@ public class ConcertService {
         concertSessionVo.setVenue(venue.getName() + Comma + venue.getLocation() + Comma + venue.getState());
         concertSessionVo.setStart_time(concertSchedule.getStartTime());
         concertSessionVo.setDuration(concertSchedule.getDuration());
+        concertSessionVo.setImgUrl(concert.getImgUrl());
         return concertSessionVo;
     }
 

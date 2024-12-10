@@ -16,4 +16,6 @@ public class Concert {
     private Integer venueId;
 
     private String name;
+
+    private String ImgUrl;
 }
