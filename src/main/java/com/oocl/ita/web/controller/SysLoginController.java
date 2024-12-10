@@ -2,12 +2,10 @@ package com.oocl.ita.web.controller;
 
 import com.oocl.ita.web.domain.bo.LoginBody;
 import com.oocl.ita.web.domain.bo.RegisterBody;
+import com.oocl.ita.web.domain.bo.SendEmailBody;
 import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.domain.vo.RespBean;
-import com.oocl.ita.web.core.redis.RedisCache;
-import com.oocl.ita.web.core.security.service.TokenService;
 import com.oocl.ita.web.service.SysLoginService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,6 +36,16 @@ public class SysLoginController {
         String token = loginService.login(loginBody.getEmail(), loginBody.getPassword());
         return RespBean.success(token);
     }
+    /**
+     * 发送注册验证邮件
+     *
+     * @return 结果
+     */
+    @PostMapping("/sendEmail")
+    public RespBean<String> sendEmail(@RequestBody SendEmailBody sendEmailBody) {
+        loginService.sendEmail(sendEmailBody);
+        return RespBean.success();
+    }
 
     /**
      * 註冊
@@ -49,6 +57,7 @@ public class SysLoginController {
         loginService.register(registerBody);
         return RespBean.success();
     }
+
 
     /**
      * 获取登录者信息
