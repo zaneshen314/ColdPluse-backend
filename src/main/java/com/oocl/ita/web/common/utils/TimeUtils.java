@@ -10,9 +10,9 @@ public class TimeUtils {
         return new Date();
     }
 
-    public static Date stringToDate(String date) {
+    public static Date stringToDate(String date, String format) {
         try {
-            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(date);
+            return new SimpleDateFormat(format).parse(date);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }

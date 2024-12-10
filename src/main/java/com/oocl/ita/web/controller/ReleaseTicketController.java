@@ -1,6 +1,7 @@
 package com.oocl.ita.web.controller;
 
 import com.oocl.ita.web.domain.bo.ReleaseTicketTaskBody;
+import com.oocl.ita.web.domain.vo.RespBean;
 import com.oocl.ita.web.service.ReleaseTicketTaskService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,8 @@ public class ReleaseTicketController {
     }
 
     @PostMapping("/{concertId}/{concertScheduleId}/schedule")
-    public void scheduleReleaseTicket(@PathVariable Integer concertId, @PathVariable Integer concertScheduleId
+    public RespBean<Boolean> scheduleReleaseTicket(@PathVariable Integer concertId, @PathVariable Integer concertScheduleId
             , @RequestBody ReleaseTicketTaskBody releaseTicketTaskBody) {
-        releaseTicketTaskService.scheduleReleaseTicketTask(concertId, concertScheduleId, releaseTicketTaskBody);
+        return RespBean.success(releaseTicketTaskService.scheduleReleaseTicketTask(concertId, concertScheduleId, releaseTicketTaskBody));
     }
 }

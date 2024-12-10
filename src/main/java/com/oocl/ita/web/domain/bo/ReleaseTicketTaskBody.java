@@ -6,7 +6,8 @@ import java.util.Date;
 
 @Data
 public class ReleaseTicketTaskBody {
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
     private Integer repeatCount;
+    private Integer hour;
 }

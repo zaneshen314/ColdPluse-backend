@@ -47,7 +47,7 @@ public class ConcertService {
         if (concertSchedules == null || concertSchedules.isEmpty()) {
             throw new EntityNotExistException("ConcertSchedule");
         }
-        Date startDate = stringToDate(concertSchedules.get(0).getStartTime());
+        Date startDate = stringToDate(concertSchedules.get(0).getStartTime(), "yyyy-MM-dd");
         if (startDate.before(getCurrentTime())) {
             throw new ConcertInProgressException();
         }
