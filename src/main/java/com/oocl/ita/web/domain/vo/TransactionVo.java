@@ -14,6 +14,8 @@ public class TransactionVo {
     private String concertName;
     private String startTime;
     private String concertClassName;
+    private String transactionTime;
+    private String imgUrl;
     private List<TicketVo> ticketVos;
 
     public static TransactionVo toVo(Transaction transaction) {
@@ -22,6 +24,7 @@ public class TransactionVo {
         transactionVo.setAmountInUsd(transaction.getAmountInUsd());
         transactionVo.setAmountInLocalCurrency(transaction.getAmountInLocalCurrency());
         transactionVo.setLocalCurrency(transaction.getLocalCurrency());
+        transactionVo.setTransactionTime(transaction.getTransactionTime());
         return transactionVo;
     }
 
@@ -30,6 +33,7 @@ public class TransactionVo {
         transactionVo.setAmountInUsd(transaction.getAmountInUsd());
         transactionVo.setAmountInLocalCurrency(transaction.getAmountInLocalCurrency());
         transactionVo.setLocalCurrency(transaction.getLocalCurrency());
+        transactionVo.setTransactionTime(transaction.getTransactionTime());
         return transactionVo;
     }
 }

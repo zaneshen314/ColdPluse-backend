@@ -17,4 +17,8 @@ public class TimeUtils {
             throw new RuntimeException(e);
         }
     }
+
+    public static String dateToString(Date date) {
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
 }
