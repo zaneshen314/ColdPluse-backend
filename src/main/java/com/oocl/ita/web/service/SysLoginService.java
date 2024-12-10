@@ -1,6 +1,7 @@
 package com.oocl.ita.web.service;
 
 
+import com.oocl.ita.web.core.exception.EmailExistException;
 import com.oocl.ita.web.core.redis.RedisCache;
 import com.oocl.ita.web.domain.bo.RegisterBody;
 import com.oocl.ita.web.domain.bo.SendEmailBody;
@@ -119,7 +120,7 @@ public class SysLoginService
             // 注册成功后，删除 Redis 中的验证码，防止再次使用
             redisCache.deleteObject(registerBody.getEmail());
         } else {
-            throw new RuntimeException("Email already exists"); // TODO: 这样直接抛出异常可能不行，你要自定义那种全局异常类代替RuntimeException
+            throw new EmailExistException();
         }
     }
 
