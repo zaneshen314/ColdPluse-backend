@@ -129,7 +129,7 @@ public class SysLoginService
             // 注册成功后，删除 Redis 中的验证码，防止再次使用
             redisCache.deleteObject(registerBody.getEmail());
         } else {
-            throw new EmailExistException("Email already exists");
+            throw new EmailExistException();
         }
     }
 
