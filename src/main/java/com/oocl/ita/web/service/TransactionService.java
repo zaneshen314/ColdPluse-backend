@@ -1,9 +1,11 @@
 package com.oocl.ita.web.service;
 
+import com.oocl.ita.web.common.utils.SecurityUtils;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.core.exception.NotEnoughTicketsException;
 import com.oocl.ita.web.core.exception.TicketLimitExceededException;
 import com.oocl.ita.web.domain.bo.OrderTicketBody;
+import com.oocl.ita.web.domain.po.Concert;
 import com.oocl.ita.web.domain.po.ConcertClass;
 import com.oocl.ita.web.domain.po.Ticket;
 import com.oocl.ita.web.domain.po.Transaction;
@@ -13,7 +15,10 @@ import com.oocl.ita.web.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+
+import static com.oocl.ita.web.common.utils.TimeUtils.dateToString;
 
 @Service
 public class TransactionService {
@@ -44,7 +49,9 @@ public class TransactionService {
         this.concertRepository = concertRepository;
     }
 
-    public List<TransactionVo> getTransactions(Integer userId) {
+    public List<TransactionVo> getTransactions() {
+//        Integer userId = SecurityUtils.getUserId();
+        Integer userId = 1;
         return transactionRepository.findAllByUserId(userId).stream()
                 .map(transaction -> {
                     Integer transactionId = transaction.getId();
@@ -64,6 +71,7 @@ public class TransactionService {
                     });
                     concertRepository.findById(concertId).ifPresent(concert -> {
                         transactionVo.setConcertName(concert.getName());
+                        transactionVo.setImgUrl(concert.getImgUrl());
                     });
                     TransactionVo.toVo(transactionVo, transaction);
                     transactionVo.setTicketVos(ticketService.getTicketsByTransactionId(transaction.getId()));
@@ -73,7 +81,9 @@ public class TransactionService {
 
 
     @Transactional
-    public TransactionVo orderTicket(Integer userId, OrderTicketBody orderTicketBody) {
+    public TransactionVo orderTicket(OrderTicketBody orderTicketBody) {
+//        Integer userId = SecurityUtils.getUserId();
+        Integer userId = 1;
         Integer count = ticketRepository.countByConcertScheduleIdAndUserId(orderTicketBody.getConcertScheduleId(), userId);
         if (count != null && (count + orderTicketBody.getViewers().size() >= 3)) {
             throw new TicketLimitExceededException();
@@ -97,6 +107,7 @@ public class TransactionService {
         transaction.setLocalCurrency(concertClass.getCurrency());
         transaction.setAmountInUsd(concertClass.getPriceInUsd() * orderTicketBody.getViewers().size());
         transaction.setAmountInLocalCurrency(concertClass.getPriceInLocalCurr() * orderTicketBody.getViewers().size());
+        transaction.setTransactionTime(dateToString(new Date()));
         Transaction saveTransaction = transactionRepository.save(transaction);
 
         List<Ticket> saveTickets = orderTicketBody.getViewers().stream().map(viewerBody -> {
@@ -116,7 +127,9 @@ public class TransactionService {
         TransactionVo transactionVo = TransactionVo.toVo(saveTransaction);
         transactionVo.setConcertClassName(concertClass.getClassName());
         transactionVo.setStartTime(concertScheduleRepository.findById(orderTicketBody.getConcertScheduleId()).orElseThrow().getStartTime());
-        transactionVo.setConcertName(concertRepository.findById(concertClass.getConcertId()).orElseThrow().getName());
+        Concert concert = concertRepository.findById(concertClass.getConcertId()).orElseThrow();
+        transactionVo.setConcertName(concert.getName());
+        transactionVo.setImgUrl(concert.getImgUrl());
         transactionVo.setTicketVos(saveTickets.stream().map(TicketVo::toVo).toList());
         return transactionVo;
     }

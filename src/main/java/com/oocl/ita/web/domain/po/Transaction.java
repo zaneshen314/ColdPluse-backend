@@ -21,4 +21,6 @@ public class Transaction {
 
     @Column(name = "local_curr")
     private String localCurrency;
+
+    private String transactionTime;
 }
