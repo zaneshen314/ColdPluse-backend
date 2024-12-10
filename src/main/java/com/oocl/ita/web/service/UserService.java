@@ -34,4 +34,8 @@ public class UserService {
     public Integer selectUserCumulatedPoint(Integer userId) {
         return userRepository.getById(userId).getCumulatedPoint();
     }
+
+    public User getById(Integer userId) {
+        return userRepository.getById(userId);
+    }
 }

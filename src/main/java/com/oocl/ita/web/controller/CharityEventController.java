@@ -4,8 +4,11 @@ import com.oocl.ita.web.domain.bo.CharityEventRegBody;
 import com.oocl.ita.web.domain.bo.CharityEventUpdateBody;
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
-import com.oocl.ita.web.domain.vo.CharityEventParticipationsResp;
+import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.vo.charity.CharityEventParticipationsResp;
+import com.oocl.ita.web.domain.vo.charity.UserParticipationRecResp;
 import com.oocl.ita.web.service.CharityEventService;
+import com.oocl.ita.web.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +18,11 @@ import java.util.List;
 public class CharityEventController {
 
     private final CharityEventService charityEventService;
+    private final UserService userService;
 
-    public CharityEventController(CharityEventService charityEventService) {
+    public CharityEventController(CharityEventService charityEventService, UserService userService) {
         this.charityEventService = charityEventService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -29,7 +34,16 @@ public class CharityEventController {
     public CharityEventParticipationsResp getCharityEventParticipationByEventId(@RequestParam Integer eventId) {
         CharityEvent charityEvent = charityEventService.getById(eventId);
         List<CharityEventParticipation> charityEventParticipations = charityEventService.getCharityEventParticipationByCharityEventId(eventId);
-        return new CharityEventParticipationsResp(charityEvent.getId(), charityEvent.getName(), charityEventParticipations);
+        List<UserParticipationRecResp> userParticipationRecResps = charityEventParticipations
+                .stream()
+                .map(charityEventParticipation ->{
+                    User user = userService.getById(charityEventParticipation.getUserId());
+                    com.oocl.ita.web.domain.vo.UserVo userVo = new com.oocl.ita.web.domain.vo.UserVo(user.getId(), user.getName(), user.getEmail(), user.getCumulatedPoint());
+                    return new UserParticipationRecResp(userVo, charityEventParticipation);
+                }
+
+                ).toList();
+        return new CharityEventParticipationsResp(charityEvent, userParticipationRecResps);
     }
 
     @PostMapping
