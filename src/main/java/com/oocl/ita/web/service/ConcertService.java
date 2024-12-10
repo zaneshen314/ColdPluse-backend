@@ -43,11 +43,11 @@ public class ConcertService {
     }
 
     public ConcertClassVo addConcertClass(Integer concertId,ConcertClassBody concertClassBody) {
-        ConcertSchedule concertSchedule = concertScheduleRepository.findByConcertId(concertId);
-        if (concertSchedule == null) {
+        List<ConcertSchedule> concertSchedules = concertScheduleRepository.findByConcertIdOOrderByStartTimeAsc(concertId);
+        if (concertSchedules == null || concertSchedules.isEmpty()) {
             throw new EntityNotExistException("ConcertSchedule");
         }
-        Date startDate = stringToDate(concertSchedule.getStartTime());
+        Date startDate = stringToDate(concertSchedules.get(0).getStartTime());
         if (startDate.before(getCurrentTime())) {
             throw new ConcertInProgressException();
         }
