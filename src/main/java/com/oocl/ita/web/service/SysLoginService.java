@@ -21,7 +21,6 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static com.oocl.ita.web.core.email.EmailUtil.sendMail;
