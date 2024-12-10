@@ -1,5 +1,6 @@
 package com.oocl.ita.web.service;
 
+import com.oocl.ita.web.common.utils.SecurityUtils;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.core.exception.NotEnoughTicketsException;
 import com.oocl.ita.web.core.exception.TicketLimitExceededException;
@@ -44,7 +45,8 @@ public class TransactionService {
         this.concertRepository = concertRepository;
     }
 
-    public List<TransactionVo> getTransactions(Integer userId) {
+    public List<TransactionVo> getTransactions() {
+        Integer userId = SecurityUtils.getUserId();
         return transactionRepository.findAllByUserId(userId).stream()
                 .map(transaction -> {
                     Integer transactionId = transaction.getId();
@@ -73,7 +75,8 @@ public class TransactionService {
 
 
     @Transactional
-    public TransactionVo orderTicket(Integer userId, OrderTicketBody orderTicketBody) {
+    public TransactionVo orderTicket(OrderTicketBody orderTicketBody) {
+        Integer userId = SecurityUtils.getUserId();
         Integer count = ticketRepository.countByConcertScheduleIdAndUserId(orderTicketBody.getConcertScheduleId(), userId);
         if (count != null && (count + orderTicketBody.getViewers().size() >= 3)) {
             throw new TicketLimitExceededException();

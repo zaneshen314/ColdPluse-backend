@@ -18,13 +18,13 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @GetMapping("/{userId}")
-    public RespBean<List<TransactionVo>> getTransactions(@PathVariable Integer userId) {
-        return RespBean.success(transactionService.getTransactions(userId));
+    @GetMapping
+    public RespBean<List<TransactionVo>> getTransactions() {
+        return RespBean.success(transactionService.getTransactions());
     }
 
-    @PostMapping("/{userId}")
-    public RespBean<TransactionVo> orderTicket(@PathVariable Integer userId, @RequestBody OrderTicketBody orderTicketBody) {
-        return RespBean.success(transactionService.orderTicket(userId, orderTicketBody));
+    @PostMapping
+    public RespBean<TransactionVo> orderTicket(@RequestBody OrderTicketBody orderTicketBody) {
+        return RespBean.success(transactionService.orderTicket(orderTicketBody));
     }
 }
