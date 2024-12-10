@@ -67,6 +67,9 @@ public class CharityEventService {
     }
 
     public void quitCharityEvent(Integer eventId, Integer userId) {
+        CharityEvent charityEvent = charityEventRepository.getById(eventId);
+        Integer currentEnrolled = charityEvent.getCurrentEnrolled() - 1;
+        charityEventRepository.updateCurrentEnrolledById(eventId, currentEnrolled);
         charityEventParticipationRepository.deleteById(new CharityEventParticipationKey(userId, eventId));
     }
 }
