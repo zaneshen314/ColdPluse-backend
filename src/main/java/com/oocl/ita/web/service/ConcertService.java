@@ -43,7 +43,7 @@ public class ConcertService {
     }
 
     public ConcertClassVo addConcertClass(Integer concertId,ConcertClassBody concertClassBody) {
-        List<ConcertSchedule> concertSchedules = concertScheduleRepository.findByConcertIdOOrderByStartTimeAsc(concertId);
+        List<ConcertSchedule> concertSchedules = concertScheduleRepository.findByConcertIdOrderByStartTimeAsc(concertId);
         if (concertSchedules == null || concertSchedules.isEmpty()) {
             throw new EntityNotExistException("ConcertSchedule");
         }
