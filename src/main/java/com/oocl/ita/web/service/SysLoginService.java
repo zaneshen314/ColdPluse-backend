@@ -1,14 +1,11 @@
 package com.oocl.ita.web.service;
 
 
-import com.oocl.ita.web.core.email.EmailTemplate;
 import com.oocl.ita.web.core.exception.EmailExistException;
-import com.oocl.ita.web.core.exception.InvalidEmailFormatException;
 import com.oocl.ita.web.core.exception.InvalidVerificationCodeException;
 import com.oocl.ita.web.core.exception.VerificationCodeMismatchException;
 import com.oocl.ita.web.core.redis.RedisCache;
 import com.oocl.ita.web.domain.bo.RegisterBody;
-import com.oocl.ita.web.domain.bo.SendEmailBody;
 import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
 import com.oocl.ita.web.core.security.domain.LoginUser;
@@ -25,14 +22,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import static com.oocl.ita.web.common.constant.EmailConstants.*;
-
-import static com.oocl.ita.web.core.email.EmailUtil.*;
 
 /**
  * 登录校验方法
@@ -114,38 +104,16 @@ public class SysLoginService
     }
     public void register(RegisterBody registerBody) {
         String email = registerBody.getEmail();
-        // 验证邮箱格式是否正确
-        if(!isValidEmail(email)) {
-            throw new InvalidEmailFormatException("The email format is incorrect, please re-enter");
-        }
         // 校验邮箱是否存在
         List<User> userList = sysUserRepository.findByEmail(email);
         if (CollectionUtils.isEmpty(userList)) {
-//            验证code
-            verificationCode(email,registerBody.getCode());
+
             User entity = registerBody.toEntity();
             entity.setPassword(passwordEncoder.encode(entity.getPassword()));
             sysUserRepository.save(entity);
-            // 注册成功后，删除 Redis 中的验证码，防止再次使用
-            redisCache.deleteObject(registerBody.getEmail());
         } else {
             throw new EmailExistException();
         }
-    }
-
-    public void sendRegisterEmail(SendEmailBody sendEmailBody) {
-        String email = sendEmailBody.getEmail();
-        if(!isValidEmail(email)){
-            throw new InvalidEmailFormatException("The email format is incorrect, please re-enter");
-        }
-        String verificationCode = generateVerificationCode();
-        Map<String, String> params = new HashMap<>();
-        params.put(VERIFICATION_CODE, verificationCode);
-        //发送邮件
-        sendEmailWithTemplate(EmailTemplate.REGISTER,email,params);
-        // 将验证码存入 Redis 中，设置过期时间为 10 分钟
-        redisCache.setCacheObject(email, verificationCode, 10, TimeUnit.MINUTES);  // 设置 10 分钟过期时间
-
     }
 
 }

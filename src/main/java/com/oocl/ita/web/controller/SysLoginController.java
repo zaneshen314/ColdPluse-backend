@@ -36,16 +36,6 @@ public class SysLoginController {
         String token = loginService.login(loginBody.getEmail(), loginBody.getPassword());
         return RespBean.success(token);
     }
-    /**
-     * 发送注册验证邮件
-     *
-     * @return 结果
-     */
-    @PostMapping("/sendEmail")
-    public RespBean<String> sendEmail(@RequestBody SendEmailBody sendEmailBody) {
-        loginService.sendRegisterEmail(sendEmailBody);
-        return RespBean.success();
-    }
 
     /**
      * 註冊
