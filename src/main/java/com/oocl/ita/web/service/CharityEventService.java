@@ -34,13 +34,13 @@ public class CharityEventService {
     }
 
     public List<CharityEventParticipation> getCharityEventParticipationByUserid(Integer userId) {
-        List<CharityEventParticipation> participations = charityEventParticipationRepository.findAllByUserId(userId);
-
-
         return charityEventParticipationRepository.findAllByUserId(userId);
     }
 
     public CharityEventParticipation registerCharityEvent(Integer userId, Integer charityEventId, boolean claimPoint) {
+        CharityEvent charityEvent = charityEventRepository.getById(charityEventId);
+        Integer currentEnrolled = charityEvent.getCurrentEnrolled() + 1;
+        charityEventRepository.updateCurrentEnrolledById(charityEventId, currentEnrolled);
         return charityEventParticipationRepository.save(new CharityEventParticipation(userId, charityEventId, REGISTERED, claimPoint));
     }
 
