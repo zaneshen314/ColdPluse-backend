@@ -5,10 +5,7 @@ import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.core.exception.NotEnoughTicketsException;
 import com.oocl.ita.web.core.exception.TicketLimitExceededException;
 import com.oocl.ita.web.domain.bo.OrderTicketBody;
-import com.oocl.ita.web.domain.po.Concert;
-import com.oocl.ita.web.domain.po.ConcertClass;
-import com.oocl.ita.web.domain.po.Ticket;
-import com.oocl.ita.web.domain.po.Transaction;
+import com.oocl.ita.web.domain.po.*;
 import com.oocl.ita.web.domain.vo.TicketVo;
 import com.oocl.ita.web.domain.vo.TransactionVo;
 import com.oocl.ita.web.repository.*;
@@ -35,18 +32,26 @@ public class TransactionService {
 
     private ConcertRepository concertRepository;
 
+    private VenueRepository venueRepository;
+
+    private ConcertScheduleClassRepository concertScheduleClassRepository;
+
     public TransactionService(TransactionRepository transactionRepository,
                               TicketService ticketService,
                               TicketRepository ticketRepository,
                               ConcertClassRepository concertClassRepository,
                               ConcertScheduleRepository concertScheduleRepository,
-                              ConcertRepository concertRepository) {
+                              ConcertRepository concertRepository,
+                              ConcertScheduleClassRepository concertScheduleClassRepository,
+                              VenueRepository venueRepository) {
         this.transactionRepository = transactionRepository;
         this.ticketService = ticketService;
         this.ticketRepository = ticketRepository;
         this.concertClassRepository = concertClassRepository;
         this.concertScheduleRepository = concertScheduleRepository;
         this.concertRepository = concertRepository;
+        this.concertScheduleClassRepository = concertScheduleClassRepository;
+        this.venueRepository = venueRepository;
     }
 
     public List<TransactionVo> getTransactions() {
@@ -72,6 +77,9 @@ public class TransactionService {
                     concertRepository.findById(concertId).ifPresent(concert -> {
                         transactionVo.setConcertName(concert.getName());
                         transactionVo.setImgUrl(concert.getImgUrl());
+                        venueRepository.findById(concert.getVenueId()).ifPresent(venue -> {
+                            transactionVo.setVenue(venue.getName() + ConcertService.Comma + venue.getLocation() + ConcertService.Comma + venue.getState());
+                        });
                     });
                     TransactionVo.toVo(transactionVo, transaction);
                     transactionVo.setTicketVos(ticketService.getTicketsByTransactionId(transaction.getId()));
@@ -93,12 +101,18 @@ public class TransactionService {
         // 要买的区域没票了
         ConcertClass concertClass =
                 concertClassRepository.findById(orderTicketBody.getConcertClassId()).orElseThrow(() -> new EntityNotExistException("concertClass"));
-        if (concertClass.getAvailableSeats() < orderTicketBody.getViewers().size()) {
+        ConcertScheduleClass concertScheduleClass = concertScheduleClassRepository
+                        .findByConcertScheduleIdAndConcertClassId(orderTicketBody.getConcertScheduleId(), orderTicketBody.getConcertClassId());
+        if (concertScheduleClass == null) {
+            throw new EntityNotExistException("concertScheduleClass");
+        }
+        if (concertScheduleClass.getAvailableSeats() < orderTicketBody.getViewers().size()) {
             throw new NotEnoughTicketsException();
         }
         // 减库存
-        concertClass.setAvailableSeats(concertClass.getAvailableSeats() - orderTicketBody.getViewers().size());
-        concertClassRepository.save(concertClass);
+        concertScheduleClass.setAvailableSeats(concertScheduleClass.getAvailableSeats() - orderTicketBody.getViewers().size());
+        concertScheduleClassRepository.save(concertScheduleClass);
+
         // TODO 放锁
 
         // 生成订单和票的信息
@@ -130,6 +144,8 @@ public class TransactionService {
         Concert concert = concertRepository.findById(concertClass.getConcertId()).orElseThrow();
         transactionVo.setConcertName(concert.getName());
         transactionVo.setImgUrl(concert.getImgUrl());
+        Venue venue = venueRepository.findById(concert.getVenueId()).orElseThrow();
+        transactionVo.setVenue(venue.getName() + ConcertService.Comma + venue.getLocation() + ConcertService.Comma + venue.getState());
         transactionVo.setTicketVos(saveTickets.stream().map(TicketVo::toVo).toList());
         return transactionVo;
     }
