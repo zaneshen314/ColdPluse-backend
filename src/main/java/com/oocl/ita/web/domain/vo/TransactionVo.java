@@ -16,6 +16,7 @@ public class TransactionVo {
     private String concertClassName;
     private String transactionTime;
     private String imgUrl;
+    private String venue;
     private List<TicketVo> ticketVos;
 
     public static TransactionVo toVo(Transaction transaction) {

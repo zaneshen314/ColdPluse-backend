@@ -14,9 +14,9 @@ public class ReleaseTicketController {
         this.releaseTicketTaskService = releaseTicketTaskService;
     }
 
-    @PostMapping("/{concertId}/schedule")
-    public void scheduleReleaseTicket(@PathVariable Integer concertId
+    @PostMapping("/{concertId}/{concertScheduleId}/schedule")
+    public void scheduleReleaseTicket(@PathVariable Integer concertId, @PathVariable Integer concertScheduleId
             , @RequestBody ReleaseTicketTaskBody releaseTicketTaskBody) {
-        releaseTicketTaskService.scheduleReleaseTicketTask(concertId, releaseTicketTaskBody);
+        releaseTicketTaskService.scheduleReleaseTicketTask(concertId, concertScheduleId, releaseTicketTaskBody);
     }
 }
