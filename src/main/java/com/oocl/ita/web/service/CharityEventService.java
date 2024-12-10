@@ -65,4 +65,8 @@ public class CharityEventService {
     public CharityEvent getById(Integer id) {
         return charityEventRepository.getById(id);
     }
+
+    public void quitCharityEvent(Integer eventId, Integer userId) {
+        charityEventParticipationRepository.deleteById(new CharityEventParticipationKey(userId, eventId));
+    }
 }
