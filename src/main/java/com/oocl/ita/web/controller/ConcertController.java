@@ -3,6 +3,7 @@ package com.oocl.ita.web.controller;
 import com.oocl.ita.web.domain.bo.ConcertClassBody;
 import com.oocl.ita.web.domain.bo.ConcertClassUpdateBody;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
+import com.oocl.ita.web.domain.vo.ConcertSessionVo;
 import com.oocl.ita.web.domain.vo.RespBean;
 import com.oocl.ita.web.service.ConcertService;
 import org.springframework.web.bind.annotation.*;
@@ -35,4 +36,9 @@ public class ConcertController {
                                                        @RequestBody ConcertClassUpdateBody concertClassBody) {
         return RespBean.success(concertService.updateConcertClass(concertId, classId, concertClassBody));
     }
+    @GetMapping("/{id}/schedules/{scheduleId}")
+    public RespBean<ConcertSessionVo> getConcertSession(@PathVariable Integer scheduleId, @PathVariable String id) {
+        return RespBean.success(concertService.getConcertSession(scheduleId));
+    }
+
 }
