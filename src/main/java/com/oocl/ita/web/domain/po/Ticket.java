@@ -23,4 +23,8 @@ public class Ticket {
     private String state;
 
     private Integer transactionId;
+
+    private Integer concertId;
+
+    private String viewerName;
 }

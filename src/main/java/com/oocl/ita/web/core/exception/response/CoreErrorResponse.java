@@ -4,7 +4,9 @@ package com.oocl.ita.web.core.exception.response;
 public enum CoreErrorResponse implements ErrorResponse {
   EMAIL_EXISTS_ERROR(200001, "Email already exists"),
   ENTITY_NOT_EXIST_ERROR(200002, "%s does not exist"),
-  CONCERT_IN_PROGRESS_ERROR(200003, "Concert is in progress"),;
+  CONCERT_IN_PROGRESS_ERROR(200003, "Concert is in progress"),
+  TICKET_LIMIT_EXCEEDED_ERROR(200004, "Ticket limit exceeded"),
+  NOT_ENOUGH_TICKETS_ERROR(200005, "Not enough tickets"),;
   private final int code;
 
   private final String message;

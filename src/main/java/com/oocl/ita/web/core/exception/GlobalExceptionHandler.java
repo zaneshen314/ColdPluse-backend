@@ -42,4 +42,16 @@ public class GlobalExceptionHandler
     {
         return RespBean.error(CoreErrorResponse.CONCERT_IN_PROGRESS_ERROR.getCode(), CoreErrorResponse.CONCERT_IN_PROGRESS_ERROR.getMessage());
     }
+
+    @ExceptionHandler(TicketLimitExceededException.class)
+    public RespBean<String> handleTicketLimitExceededException(TicketLimitExceededException ignored)
+    {
+        return RespBean.error(CoreErrorResponse.TICKET_LIMIT_EXCEEDED_ERROR.getCode(), CoreErrorResponse.TICKET_LIMIT_EXCEEDED_ERROR.getMessage());
+    }
+
+    @ExceptionHandler(NotEnoughTicketsException.class)
+    public RespBean<String> handleNotEnoughTicketsException(NotEnoughTicketsException ignored)
+    {
+        return RespBean.error(CoreErrorResponse.NOT_ENOUGH_TICKETS_ERROR.getCode(), CoreErrorResponse.NOT_ENOUGH_TICKETS_ERROR.getMessage());
+    }
 }

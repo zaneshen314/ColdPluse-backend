@@ -34,6 +34,8 @@ dependencies {
     implementation 'com.sun.mail:javax.mail:1.6.2'
     annotationProcessor 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
+    implementation 'com.google.zxing:core:3.4.1'
+    implementation 'com.google.zxing:javase:3.4.1'
 }
 
 test {
