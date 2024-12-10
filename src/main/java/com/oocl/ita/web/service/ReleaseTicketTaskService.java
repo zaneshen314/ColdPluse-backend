@@ -2,7 +2,11 @@ package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.domain.bo.ReleaseTicketTaskBody;
 import com.oocl.ita.web.domain.po.ConcertClass;
+import com.oocl.ita.web.domain.po.ConcertSchedule;
+import com.oocl.ita.web.domain.po.ConcertScheduleClass;
 import com.oocl.ita.web.repository.ConcertClassRepository;
+import com.oocl.ita.web.repository.ConcertScheduleClassRepository;
+import com.oocl.ita.web.repository.ConcertScheduleRepository;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
@@ -19,6 +23,8 @@ public class ReleaseTicketTaskService {
 
     private ConcertClassRepository concertClassRepository;
 
+    private ConcertScheduleClassRepository concertScheduleClassRepository;
+
     private final TaskScheduler taskScheduler = new ConcurrentTaskScheduler();
 
     private LocalDate lastExecutionDate;
@@ -26,11 +32,13 @@ public class ReleaseTicketTaskService {
     // 用于保存定时任务的返回值，以便取消定时任务
     private ScheduledFuture<?> scheduledFuture;
 
-    public ReleaseTicketTaskService(ConcertClassRepository concertClassRepository) {
+    public ReleaseTicketTaskService(ConcertClassRepository concertClassRepository,
+                                    ConcertScheduleClassRepository concertScheduleClassRepository) {
         this.concertClassRepository = concertClassRepository;
+        this.concertScheduleClassRepository = concertScheduleClassRepository;
     }
 
-    public void scheduleReleaseTicketTask(Integer concertId, ReleaseTicketTaskBody releaseTicketTaskBody) {
+    public void scheduleReleaseTicketTask(Integer concertId, Integer concertScheduleId, ReleaseTicketTaskBody releaseTicketTaskBody) {
         int repeatCount = releaseTicketTaskBody.getRepeatCount();
         String cronExpression = "0 0 21 * * ?";
 
@@ -59,8 +67,10 @@ public class ReleaseTicketTaskService {
                             cancelReleaseTicketTask();
                             return;
                         }
-                        concertClass.setAvailableSeats(concertClass.getAvailableSeats() + quantity);
-                        concertClassRepository.save(concertClass);
+                        ConcertScheduleClass concertScheduleClass =
+                                concertScheduleClassRepository.findByConcertScheduleIdAndConcertClassId(concertScheduleId, concertClass.getId());
+                        concertScheduleClass.setAvailableSeats(concertScheduleClass.getAvailableSeats() + quantity);
+                        concertScheduleClassRepository.save(concertScheduleClass);
                     });
                     count++;
                     lastExecutionDate = currentDate;
