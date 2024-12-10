@@ -36,7 +36,7 @@ public class UserController {
         return charityEventParticipations
                 .stream()
                 .map(charityEventParticipation -> {
-                    CharityEvent charityEvent = charityEventService.getById(charityEventParticipation.getUserId());
+                    CharityEvent charityEvent = charityEventService.getById(charityEventParticipation.getCharityEventId());
                     return new UserCharityEventParticipationResp(charityEventParticipation, charityEvent);
                 }).toList();
     }
