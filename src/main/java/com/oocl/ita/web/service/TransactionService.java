@@ -46,7 +46,8 @@ public class TransactionService {
     }
 
     public List<TransactionVo> getTransactions() {
-        Integer userId = SecurityUtils.getUserId();
+//        Integer userId = SecurityUtils.getUserId();
+        Integer userId = 1;
         return transactionRepository.findAllByUserId(userId).stream()
                 .map(transaction -> {
                     Integer transactionId = transaction.getId();
@@ -76,7 +77,8 @@ public class TransactionService {
 
     @Transactional
     public TransactionVo orderTicket(OrderTicketBody orderTicketBody) {
-        Integer userId = SecurityUtils.getUserId();
+//        Integer userId = SecurityUtils.getUserId();
+        Integer userId = 1;
         Integer count = ticketRepository.countByConcertScheduleIdAndUserId(orderTicketBody.getConcertScheduleId(), userId);
         if (count != null && (count + orderTicketBody.getViewers().size() >= 3)) {
             throw new TicketLimitExceededException();
