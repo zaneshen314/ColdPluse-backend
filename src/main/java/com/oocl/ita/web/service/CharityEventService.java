@@ -34,6 +34,9 @@ public class CharityEventService {
     }
 
     public List<CharityEventParticipation> getCharityEventParticipationByUserid(Integer userId) {
+        List<CharityEventParticipation> participations = charityEventParticipationRepository.findAllByUserId(userId);
+
+
         return charityEventParticipationRepository.findAllByUserId(userId);
     }
 

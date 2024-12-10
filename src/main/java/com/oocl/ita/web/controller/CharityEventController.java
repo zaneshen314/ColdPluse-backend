@@ -5,10 +5,12 @@ import com.oocl.ita.web.domain.bo.CharityEventUpdateBody;
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
 import com.oocl.ita.web.domain.vo.CharityEventParticipationsResp;
+import com.oocl.ita.web.domain.vo.UserCharityEventParticipationResp;
 import com.oocl.ita.web.service.CharityEventService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/charity-events")

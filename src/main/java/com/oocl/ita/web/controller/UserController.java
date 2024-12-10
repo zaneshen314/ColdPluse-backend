@@ -1,14 +1,18 @@
 package com.oocl.ita.web.controller;
 
+import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
+import com.oocl.ita.web.domain.vo.UserCharityEventParticipationResp;
 import com.oocl.ita.web.service.CharityEventService;
 import com.oocl.ita.web.service.UserService;
+import org.hibernate.Hibernate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -28,8 +32,15 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/charity-event-participations")
-    public List<CharityEventParticipation> getCharityEventParticipationByUserId(@PathVariable Integer userId) {
-        return charityEventService.getCharityEventParticipationByUserid(userId);
+    public List<UserCharityEventParticipationResp> getCharityEventParticipationByUserId(@PathVariable Integer userId) {
+        List<CharityEventParticipation> charityEventParticipations = charityEventService.getCharityEventParticipationByCharityEventId(userId);
+
+        return charityEventParticipations
+                .stream()
+                .map(charityEventParticipation -> {
+                    CharityEvent charityEvent = charityEventService.getById(charityEventParticipation.getUserId());
+                    return new UserCharityEventParticipationResp(charityEventParticipation, charityEvent);
+                }).toList();
     }
 
 
