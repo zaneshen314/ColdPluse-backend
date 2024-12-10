@@ -14,4 +14,6 @@ public class Concert {
     private Integer id;
 
     private Integer venueId;
+
+    private String name;
 }

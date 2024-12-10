@@ -4,15 +4,21 @@ import com.oocl.ita.web.core.exception.ConcertInProgressException;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.domain.bo.ConcertClassBody;
 import com.oocl.ita.web.domain.bo.ConcertClassUpdateBody;
+import com.oocl.ita.web.domain.po.Concert;
 import com.oocl.ita.web.domain.po.ConcertClass;
 import com.oocl.ita.web.domain.po.ConcertSchedule;
+import com.oocl.ita.web.domain.po.Venue;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
+import com.oocl.ita.web.domain.vo.ConcertSessionVo;
 import com.oocl.ita.web.repository.ConcertClassRepository;
+import com.oocl.ita.web.repository.ConcertRepository;
 import com.oocl.ita.web.repository.ConcertScheduleRepository;
+import com.oocl.ita.web.repository.VenueRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.oocl.ita.web.common.utils.TimeUtils.getCurrentTime;
 import static com.oocl.ita.web.common.utils.TimeUtils.stringToDate;
@@ -20,13 +26,20 @@ import static com.oocl.ita.web.common.utils.TimeUtils.stringToDate;
 @Service
 public class ConcertService {
 
+    public static final String Comma = ", ";
+    private ConcertRepository concertRepository;
+
     private ConcertClassRepository concertClassRepository;
 
     private ConcertScheduleRepository concertScheduleRepository;
 
-    public ConcertService(ConcertClassRepository concertClassRepository, ConcertScheduleRepository concertScheduleRepository) {
+    private VenueRepository venueRepository;
+
+    public ConcertService(ConcertClassRepository concertClassRepository, ConcertScheduleRepository concertScheduleRepository, ConcertRepository concertRepository, VenueRepository venueRepository) {
         this.concertClassRepository = concertClassRepository;
         this.concertScheduleRepository = concertScheduleRepository;
+        this.concertRepository = concertRepository;
+        this.venueRepository = venueRepository;
     }
 
     public ConcertClassVo addConcertClass(Integer concertId,ConcertClassBody concertClassBody) {
@@ -99,4 +112,36 @@ public class ConcertService {
         ConcertClass updatedConcertClass = concertClassRepository.save(buildUpdatedConcertClass(concertClass, concertClassBody));
         return buildConcertClassVo(updatedConcertClass);
     }
+
+    public ConcertSessionVo getConcertSession(Integer concertScheduleId) {
+        ConcertSchedule concertSchedule = concertScheduleRepository.findById(concertScheduleId).orElseThrow(() -> new EntityNotExistException("ConcertSchedule"));
+
+        Concert concert = concertRepository.getById(concertSchedule.getConcertId());
+
+        Venue venue = venueRepository.findById(concert.getVenueId()).orElseThrow(() -> new EntityNotExistException("Venue"));;
+
+        if (concertSchedule == null) {
+            throw new EntityNotExistException("ConcertSchedule");
+        }
+
+        ConcertSessionVo concertSessionVo = new ConcertSessionVo();
+        concertSessionVo.setId(concertSchedule.getConcertId());
+        concertSessionVo.setName(concert.getName());
+        concertSessionVo.setMaxPrice(concertClassRepository.getMaxPriceByConcertId(concertSchedule.getConcertId()));
+        concertSessionVo.setMinPrice(concertClassRepository.getMinPriceByConcertId(concertSchedule.getConcertId()));
+        concertSessionVo.setVenue(venue.getName() + Comma + venue.getLocation() + Comma + venue.getState());
+        concertSessionVo.setStart_time(concertSchedule.getStartTime());
+        concertSessionVo.setDuration(concertSchedule.getDuration());
+        return concertSessionVo;
+    }
+
+
+
+
+
+
+
+
+
+
 }
