@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.oocl.ita.web.common.utils.TimeUtils.getCurrentTime;
 import static com.oocl.ita.web.common.utils.TimeUtils.stringToDate;
@@ -124,8 +124,32 @@ public class ConcertService {
             throw new EntityNotExistException("ConcertSchedule");
         }
 
+        return getConcertSessionVo(concertSchedule, concert, venue);
+    }
+
+    public List<ConcertSessionVo> getAllConcertSessions() {
+        // Fetch all concert schedules
+        List<ConcertSchedule> concertSchedules = concertScheduleRepository.findAll();
+
+        if (concertSchedules.isEmpty()) {
+            throw new EntityNotExistException("No concert schedules found.");
+        }
+
+        // Map each concert schedule to its respective ConcertSessionVo
+        return concertSchedules.stream().map(concertSchedule -> {
+            Concert concert = concertRepository.getById(concertSchedule.getConcertId());
+
+            Venue venue = venueRepository.findById(concert.getVenueId())
+                    .orElseThrow(() -> new EntityNotExistException("Venue"));
+
+            return getConcertSessionVo(concertSchedule, concert, venue);
+        }).collect(Collectors.toList());
+    }
+
+    private ConcertSessionVo getConcertSessionVo(ConcertSchedule concertSchedule, Concert concert, Venue venue) {
         ConcertSessionVo concertSessionVo = new ConcertSessionVo();
-        concertSessionVo.setId(concertSchedule.getConcertId());
+        concertSessionVo.setConcertId(concertSchedule.getConcertId());
+        concertSessionVo.setScheduleId(concertSchedule.getId());
         concertSessionVo.setName(concert.getName());
         concertSessionVo.setMaxPrice(concertClassRepository.getMaxPriceByConcertId(concertSchedule.getConcertId()));
         concertSessionVo.setMinPrice(concertClassRepository.getMinPriceByConcertId(concertSchedule.getConcertId()));
@@ -133,16 +157,9 @@ public class ConcertService {
         concertSessionVo.setStart_time(concertSchedule.getStartTime());
         concertSessionVo.setDuration(concertSchedule.getDuration());
         concertSessionVo.setImgUrl(concert.getImgUrl());
+
         return concertSessionVo;
     }
-
-
-
-
-
-
-
-
 
 
 }

@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class ConcertSessionVo {
-    private Integer id;
+    private Integer concertId;
+    private Integer scheduleId;
     private String name;
     private Double maxPrice;
     private Double minPrice;

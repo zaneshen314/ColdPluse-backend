@@ -41,4 +41,9 @@ public class ConcertController {
         return RespBean.success(concertService.getConcertSession(scheduleId));
     }
 
+    @GetMapping("/schedules")
+    public RespBean<List<ConcertSessionVo>> getAllConcertSessions() {
+        return RespBean.success(concertService.getAllConcertSessions());
+    }
+
 }
