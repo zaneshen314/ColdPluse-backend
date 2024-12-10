@@ -31,7 +31,7 @@ public class UserController {
 
     @GetMapping("/{userId}/charity-event-participations")
     public List<UserCharityEventParticipationResp> getCharityEventParticipationByUserId(@PathVariable Integer userId) {
-        List<CharityEventParticipation> charityEventParticipations = charityEventService.getCharityEventParticipationByCharityEventId(userId);
+        List<CharityEventParticipation> charityEventParticipations = charityEventService.getCharityEventParticipationByUserid(userId);
 
         return charityEventParticipations
                 .stream()
