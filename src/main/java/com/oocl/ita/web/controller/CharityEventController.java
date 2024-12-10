@@ -56,4 +56,9 @@ public class CharityEventController {
         return charityEventService.updateCharityEventParticipationStatus(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId(), charityEventUpdateBody.getStatus());
     }
 
+    @DeleteMapping(params = {"eventId", "userId"})
+    public void deleteCharityEventParticipation(@RequestParam Integer eventId, @RequestParam Integer userId) {
+        charityEventService.quitCharityEvent(eventId, userId);
+    }
+
 }
