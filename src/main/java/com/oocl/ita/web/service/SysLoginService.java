@@ -89,19 +89,7 @@ public class SysLoginService
         String encode = bCryptPasswordEncoder.encode("123456");
         System.out.println(encode);
     }
-    public void verificationCode(String email,String code){
-        // 从 Redis 获取存储的验证码
-        String storedCode = redisCache.getCacheObject(email);
-        // 校验验证码
-        if (storedCode == null) {
-            throw new InvalidVerificationCodeException("The verification code has expired or is invalid. Please obtain the verification code again");
-        }
 
-        // 比较用户输入的验证码与 Redis 中存储的验证码
-        if (!storedCode.equals(code)) {
-            throw new VerificationCodeMismatchException("Verification code does not match, please re-enter");
-        }
-    }
     public void register(RegisterBody registerBody) {
         String email = registerBody.getEmail();
         // 校验邮箱是否存在
