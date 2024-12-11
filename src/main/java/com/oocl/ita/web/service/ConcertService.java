@@ -225,4 +225,8 @@ public class ConcertService {
                 .stream().map(concertClass -> new ConcertScheduleClass(concertSchedule.getId(), concertClass.getId())).toList());
         return concertSchedule;
     }
+
+    public List<Concert> getAllConcerts() {
+        return concertRepository.findAll();
+    }
 }

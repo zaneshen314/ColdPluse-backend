@@ -3,6 +3,7 @@ package com.oocl.ita.web.controller;
 import com.oocl.ita.web.domain.bo.ConcertClassBody;
 import com.oocl.ita.web.domain.bo.ConcertClassUpdateBody;
 import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
+import com.oocl.ita.web.domain.po.Concert;
 import com.oocl.ita.web.domain.po.ConcertSchedule;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.ConcertSessionVo;
@@ -21,6 +22,11 @@ public class ConcertController {
 
     public ConcertController(ConcertService concertService) {
         this.concertService = concertService;
+    }
+
+    @GetMapping
+    public RespBean<List<Concert>> getAllConcerts() {
+        return RespBean.success(concertService.getAllConcerts());
     }
 
     @PostMapping("/{concertId}/classes")
