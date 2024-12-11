@@ -39,6 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
         if (CollectionUtils.isEmpty(user))
         {
             log.info("登录用户：{} 不存在.", email);
+            EmailUtil.testEmail();
             throw new RuntimeException("登录用户：" + email + " 不存在");
         }
         Authentication usernamePasswordAuthenticationToken = AuthenticationContextHolder.getContext();
@@ -46,7 +47,6 @@ public class UserDetailsServiceImpl implements UserDetailsService
         if (!SecurityUtils.matchesPassword(password, user.get(0).getPassword()))
         {
             log.info("登录用户：{} 密码错误.", email);
-            EmailUtil.testEmail();
             throw new RuntimeException("密码错误");
         }
         return createLoginUser(user.get(0));
