@@ -53,27 +53,27 @@ public class ReleaseTicketTaskService {
         if (ticketReleaseRepository.findByConcertScheduleId(concertScheduleId) != null) {
             return false;
         }
+        int repeatCount = releaseTicketTaskBody.getRepeatCount();
+        Date startTime = TimeUtils.stringToDate(releaseTicketTaskBody.getStartTime(), "yyyy-MM-dd");
+        Date endTime = TimeUtils.stringToDate(releaseTicketTaskBody.getEndTime(), "yyyy-MM-dd");
+        LocalDate startTimeLocalDate = startTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endTimeLocalDate = endTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        long apartDay = ChronoUnit.DAYS.between(endTimeLocalDate, startTimeLocalDate) / repeatCount;
+
         TicketRelease ticketRelease = new TicketRelease();
         ticketRelease.setConcertScheduleId(concertScheduleId);
         ticketRelease.setFrequency(releaseTicketTaskBody.getRepeatCount());
         ticketRelease.setStartTime(releaseTicketTaskBody.getStartTime());
         ticketRelease.setEndTime(releaseTicketTaskBody.getEndTime());
         ticketRelease.setHour(releaseTicketTaskBody.getHour());
+        ticketRelease.setNextPresellTime(startTimeLocalDate.toString());
         ticketReleaseRepository.save(ticketRelease);
 
-        int repeatCount = releaseTicketTaskBody.getRepeatCount();
         String cronExpression = "0 0 %d * * ?".formatted(releaseTicketTaskBody.getHour());
-
-        Date startTime = TimeUtils.stringToDate(releaseTicketTaskBody.getStartTime(), "yyyy-MM-dd");
-        Date endTime = TimeUtils.stringToDate(releaseTicketTaskBody.getEndTime(), "yyyy-MM-dd");
 
         List<ConcertClass> concertClasses = concertClassRepository.findByConcertId(concertId);
         final Map<Integer, List<Integer>> concertClassMapQuantities =
                 generateConcertClassQuantityMapping(concertClasses, repeatCount);
-
-        LocalDate startTimeLocalDate = startTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endTimeLocalDate = endTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        long apartDay = ChronoUnit.DAYS.between(endTimeLocalDate, startTimeLocalDate) / repeatCount;
 
         Runnable releaseTicketTask = new Runnable() {
             private int count = 0;
