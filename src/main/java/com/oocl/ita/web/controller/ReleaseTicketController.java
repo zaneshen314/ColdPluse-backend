@@ -28,4 +28,9 @@ public class ReleaseTicketController {
             , @RequestBody ReleaseTicketTaskBody releaseTicketTaskBody) {
         return RespBean.success(releaseTicketTaskService.scheduleReleaseTicketTask(concertId, concertScheduleId, releaseTicketTaskBody));
     }
+
+    @PostMapping("/{concertId}/{concertScheduleId}/releaseNow")
+    public RespBean<Boolean> releaseTicketNow(@PathVariable Integer concertId, @PathVariable Integer concertScheduleId) {
+        return RespBean.success(releaseTicketTaskService.releaseTicketNow(concertId, concertScheduleId));
+    }
 }

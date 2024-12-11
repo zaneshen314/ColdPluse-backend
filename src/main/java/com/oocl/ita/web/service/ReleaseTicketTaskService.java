@@ -187,4 +187,14 @@ public class ReleaseTicketTaskService {
         });
         return concertScheduleTicketReleaseVos;
     }
+
+    public Boolean releaseTicketNow(Integer concertId, Integer concertScheduleId) {
+        concertScheduleClassRepository.findByConcertScheduleId(concertScheduleId).forEach(concertScheduleClass -> {
+            concertClassRepository.findById(concertScheduleClass.getConcertClassId()).ifPresent(concertClass -> {
+                concertScheduleClass.setAvailableSeats(concertClass.getCapacity());
+                concertScheduleClassRepository.save(concertScheduleClass);
+            });
+        });
+        return true;
+    }
 }
