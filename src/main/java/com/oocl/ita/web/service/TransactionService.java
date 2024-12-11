@@ -16,6 +16,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -98,7 +100,9 @@ public class TransactionService {
         ConcertSchedule concertSchedule =
                 concertScheduleRepository.findById(orderTicketBody.getConcertScheduleId())
                         .orElseThrow(() -> new EntityNotExistException("concertSchedule"));
-        if (concertSchedule.getSaleStartTime().compareTo(dateToString(new Date(), "yyyy-MM-dd HH:mm:ss")) > 0) {
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+
+        if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(zonedDateTime.toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
             logger.info("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
             throw new TicketSaleNotStartedException();
         }
