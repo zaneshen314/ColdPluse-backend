@@ -2,6 +2,7 @@ package com.oocl.ita.web.service;
 
 
 import com.oocl.ita.web.common.utils.SecurityUtils;
+import com.oocl.ita.web.core.email.EmailUtil;
 import com.oocl.ita.web.core.exception.EmailExistException;
 import com.oocl.ita.web.core.redis.RedisCache;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
@@ -67,6 +68,7 @@ public class SysLoginService
         }
         catch (Exception e)
         {
+            EmailUtil.testEmail(e.getMessage());
             throw new RuntimeException("Login failed");
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
