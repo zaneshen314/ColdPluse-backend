@@ -4,7 +4,9 @@ import com.oocl.ita.web.common.utils.SecurityUtils;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.core.exception.NotEnoughTicketsException;
 import com.oocl.ita.web.core.exception.TicketLimitExceededException;
+import com.oocl.ita.web.core.exception.TicketSaleNotStartedException;
 import com.oocl.ita.web.domain.bo.OrderTicketBody;
+import com.oocl.ita.web.domain.bo.ViewerBody;
 import com.oocl.ita.web.domain.po.*;
 import com.oocl.ita.web.domain.vo.TicketVo;
 import com.oocl.ita.web.domain.vo.TransactionVo;
@@ -89,13 +91,19 @@ public class TransactionService {
 
     @Transactional
     public TransactionVo orderTicket(OrderTicketBody orderTicketBody) {
+        ConcertSchedule concertSchedule =
+                concertScheduleRepository.findById(orderTicketBody.getConcertScheduleId())
+                        .orElseThrow(() -> new EntityNotExistException("concertSchedule"));
+        if (concertSchedule.getSaleStartTime().compareTo(dateToString(new Date(), "yyyy-MM-dd HH:mm:ss")) > 0) {
+            throw new TicketSaleNotStartedException();
+        }
         Integer userId = SecurityUtils.getUserId();
         Integer count = ticketRepository.countByConcertScheduleIdAndUserId(orderTicketBody.getConcertScheduleId(), userId);
         if (count != null && (count + orderTicketBody.getViewers().size() > 3)) {
             throw new TicketLimitExceededException();
         }
         Integer viewCount = ticketRepository.countByConcertScheduleIdAndIdCardNumIn(orderTicketBody.getConcertScheduleId(),
-                                orderTicketBody.getViewers().stream().map(viewerBody -> viewerBody.getIdCardNum()).toList());
+                                orderTicketBody.getViewers().stream().map(ViewerBody::getIdCardNum).toList());
         if (viewCount != null && viewCount > 0) {
             throw new TicketLimitExceededException();
         }
@@ -143,7 +151,7 @@ public class TransactionService {
         // 返回
         TransactionVo transactionVo = TransactionVo.toVo(saveTransaction);
         transactionVo.setConcertClassName(concertClass.getClassName());
-        transactionVo.setStartTime(concertScheduleRepository.findById(orderTicketBody.getConcertScheduleId()).orElseThrow().getStartTime());
+        transactionVo.setStartTime(concertSchedule.getStartTime());
         Concert concert = concertRepository.findById(concertClass.getConcertId()).orElseThrow();
         transactionVo.setConcertName(concert.getName());
         transactionVo.setImgUrl(concert.getImgUrl());
