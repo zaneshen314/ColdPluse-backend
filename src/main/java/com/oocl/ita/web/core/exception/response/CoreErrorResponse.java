@@ -6,7 +6,8 @@ public enum CoreErrorResponse implements ErrorResponse {
   ENTITY_NOT_EXIST_ERROR(200002, "%s does not exist"),
   CONCERT_IN_PROGRESS_ERROR(200003, "Concert is in progress"),
   TICKET_LIMIT_EXCEEDED_ERROR(200004, "Ticket limit exceeded"),
-  NOT_ENOUGH_TICKETS_ERROR(200005, "Not enough tickets"),;
+  NOT_ENOUGH_TICKETS_ERROR(200005, "Not enough tickets"),
+  TICKET_SALE_NOT_STARTED(200006, "Ticket sale not started"),;
   private final int code;
 
   private final String message;

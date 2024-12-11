@@ -59,4 +59,11 @@ public class GlobalExceptionHandler
     {
         return RespBean.error(CoreErrorResponse.NOT_ENOUGH_TICKETS_ERROR.getCode(), CoreErrorResponse.NOT_ENOUGH_TICKETS_ERROR.getMessage());
     }
+
+    @ExceptionHandler(TicketSaleNotStartedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public RespBean<String> handleTicketSaleNotStartedException(TicketSaleNotStartedException ignored)
+    {
+        return RespBean.error(CoreErrorResponse.TICKET_SALE_NOT_STARTED.getCode(), CoreErrorResponse.TICKET_SALE_NOT_STARTED.getMessage());
+    }
 }
