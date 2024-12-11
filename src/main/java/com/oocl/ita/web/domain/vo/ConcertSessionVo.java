@@ -14,5 +14,5 @@ public class ConcertSessionVo {
     private Long duration;
     private String ImgUrl;
     private String saleStartTime;
-    private String nextPresallTime;
+    private String nextPresellTime;
 }
