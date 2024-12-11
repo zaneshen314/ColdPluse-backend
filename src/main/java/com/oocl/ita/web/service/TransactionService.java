@@ -11,6 +11,8 @@ import com.oocl.ita.web.domain.po.*;
 import com.oocl.ita.web.domain.vo.TicketVo;
 import com.oocl.ita.web.domain.vo.TransactionVo;
 import com.oocl.ita.web.repository.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,8 @@ public class TransactionService {
     private VenueRepository venueRepository;
 
     private ConcertScheduleClassRepository concertScheduleClassRepository;
+
+    private final Log logger = LogFactory.getLog(TransactionService.class);
 
     public TransactionService(TransactionRepository transactionRepository,
                               TicketService ticketService,
@@ -95,6 +99,7 @@ public class TransactionService {
                 concertScheduleRepository.findById(orderTicketBody.getConcertScheduleId())
                         .orElseThrow(() -> new EntityNotExistException("concertSchedule"));
         if (concertSchedule.getSaleStartTime().compareTo(dateToString(new Date(), "yyyy-MM-dd HH:mm:ss")) > 0) {
+            logger.info("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
             throw new TicketSaleNotStartedException();
         }
         Integer userId = SecurityUtils.getUserId();
