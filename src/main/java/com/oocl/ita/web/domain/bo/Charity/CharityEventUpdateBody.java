@@ -1,6 +1,6 @@
 package com.oocl.ita.web.domain.bo.Charity;
 
-import com.oocl.ita.web.CharityEventParticipationStatus;
+import com.oocl.ita.web.common.constant.CharityEventParticipationStatus;
 
 public class CharityEventUpdateBody {
 

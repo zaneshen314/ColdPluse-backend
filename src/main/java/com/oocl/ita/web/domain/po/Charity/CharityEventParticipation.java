@@ -1,7 +1,7 @@
 package com.oocl.ita.web.domain.po.Charity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.oocl.ita.web.CharityEventParticipationStatus;
+import com.oocl.ita.web.common.constant.CharityEventParticipationStatus;
 import lombok.Data;
 import javax.persistence.*;
 

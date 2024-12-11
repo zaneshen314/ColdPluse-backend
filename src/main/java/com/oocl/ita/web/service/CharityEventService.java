@@ -1,6 +1,6 @@
 package com.oocl.ita.web.service;
 
-import com.oocl.ita.web.CharityEventParticipationStatus;
+import com.oocl.ita.web.common.constant.CharityEventParticipationStatus;
 import com.oocl.ita.web.domain.po.Charity.CharityEvent;
 import com.oocl.ita.web.domain.po.Charity.CharityEventParticipation;
 import com.oocl.ita.web.domain.po.Charity.CharityEventParticipationKey;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.oocl.ita.web.CharityEventParticipationStatus.REGISTERED;
+import static com.oocl.ita.web.common.constant.CharityEventParticipationStatus.REGISTERED;
 
 @Service
 public class CharityEventService {

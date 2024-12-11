@@ -1,4 +1,4 @@
-package com.oocl.ita.web;
+package com.oocl.ita.web.common.constant;
 
 public enum CharityEventParticipationStatus {
 
