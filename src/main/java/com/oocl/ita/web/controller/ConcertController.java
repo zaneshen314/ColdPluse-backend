@@ -46,4 +46,11 @@ public class ConcertController {
         return RespBean.success(concertService.getAllConcertSessions());
     }
 
+    @GetMapping("/{concertId}/schedules")
+    public RespBean<List<ConcertSessionVo>> getConcertSessionsByConcertId(@PathVariable Integer concertId) {
+        return RespBean.success(concertService.getConcertSessionsByConcertId(concertId));
+    }
+
+
+
 }
