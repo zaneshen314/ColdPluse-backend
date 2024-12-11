@@ -1,7 +1,7 @@
 package com.oocl.ita.web.core.security.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.po.User.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

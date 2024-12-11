@@ -1,13 +1,12 @@
 package com.oocl.ita.web.controller;
 
 import com.oocl.ita.web.common.utils.SecurityUtils;
-import com.oocl.ita.web.domain.bo.CharityEventRegBody;
-import com.oocl.ita.web.domain.bo.CharityEventUpdateBody;
-import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
-import com.oocl.ita.web.domain.po.CharityEvent;
-import com.oocl.ita.web.domain.po.CharityEventParticipation;
-import com.oocl.ita.web.domain.po.ConcertSchedule;
-import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.bo.Charity.CharityEventRegBody;
+import com.oocl.ita.web.domain.bo.Charity.CharityEventUpdateBody;
+import com.oocl.ita.web.domain.po.Charity.CharityEvent;
+import com.oocl.ita.web.domain.po.Charity.CharityEventParticipation;
+import com.oocl.ita.web.domain.po.User.User;
+import com.oocl.ita.web.domain.vo.User.UserVo;
 import com.oocl.ita.web.domain.vo.charity.CharityEventParticipationsResp;
 import com.oocl.ita.web.domain.vo.charity.UserParticipationRecResp;
 import com.oocl.ita.web.service.CharityEventService;
@@ -41,7 +40,7 @@ public class CharityEventController {
                 .stream()
                 .map(charityEventParticipation ->{
                     User user = userService.getById(charityEventParticipation.getUserId());
-                    com.oocl.ita.web.domain.vo.UserVo userVo = new com.oocl.ita.web.domain.vo.UserVo(user.getId(), user.getName(), user.getEmail(), user.getCumulatedPoint());
+                    UserVo userVo = new UserVo(user.getId(), user.getName(), user.getEmail(), user.getCumulatedPoint());
                     return new UserParticipationRecResp(userVo, charityEventParticipation);
                 }
 

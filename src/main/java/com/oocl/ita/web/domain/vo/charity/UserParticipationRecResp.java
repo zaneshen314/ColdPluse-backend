@@ -1,7 +1,7 @@
 package com.oocl.ita.web.domain.vo.charity;
 
-import com.oocl.ita.web.domain.po.CharityEventParticipation;
-import com.oocl.ita.web.domain.vo.UserVo;
+import com.oocl.ita.web.domain.po.Charity.CharityEventParticipation;
+import com.oocl.ita.web.domain.vo.User.UserVo;
 
 public class UserParticipationRecResp {
 

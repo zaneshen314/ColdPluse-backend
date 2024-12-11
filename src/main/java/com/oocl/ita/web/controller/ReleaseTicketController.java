@@ -1,7 +1,7 @@
 package com.oocl.ita.web.controller;
 
-import com.oocl.ita.web.domain.bo.ReleaseTicketTaskBody;
-import com.oocl.ita.web.domain.vo.ConcertScheduleTicketReleaseVo;
+import com.oocl.ita.web.domain.bo.Ticket.ReleaseTicketTaskBody;
+import com.oocl.ita.web.domain.vo.Concert.ConcertScheduleTicketReleaseVo;
 import com.oocl.ita.web.domain.vo.RespBean;
 import com.oocl.ita.web.service.ReleaseTicketTaskService;
 import org.springframework.web.bind.annotation.*;

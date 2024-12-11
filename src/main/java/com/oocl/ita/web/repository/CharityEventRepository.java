@@ -1,6 +1,6 @@
 package com.oocl.ita.web.repository;
 
-import com.oocl.ita.web.domain.po.CharityEvent;
+import com.oocl.ita.web.domain.po.Charity.CharityEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

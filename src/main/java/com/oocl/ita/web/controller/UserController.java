@@ -1,9 +1,9 @@
 package com.oocl.ita.web.controller;
 
 import com.oocl.ita.web.common.utils.SecurityUtils;
-import com.oocl.ita.web.domain.po.CharityEvent;
-import com.oocl.ita.web.domain.po.CharityEventParticipation;
-import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.po.Charity.CharityEvent;
+import com.oocl.ita.web.domain.po.Charity.CharityEventParticipation;
+import com.oocl.ita.web.domain.po.User.User;
 import com.oocl.ita.web.domain.vo.charity.UserCharityEventParticipationResp;
 import com.oocl.ita.web.repository.CharityEventParticipationRepository;
 import com.oocl.ita.web.service.CharityEventService;

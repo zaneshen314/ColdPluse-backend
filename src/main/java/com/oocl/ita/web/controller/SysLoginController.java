@@ -1,9 +1,8 @@
 package com.oocl.ita.web.controller;
 
-import com.oocl.ita.web.domain.bo.LoginBody;
-import com.oocl.ita.web.domain.bo.RegisterBody;
-import com.oocl.ita.web.domain.bo.SendEmailBody;
-import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.bo.Login.LoginBody;
+import com.oocl.ita.web.domain.bo.Login.RegisterBody;
+import com.oocl.ita.web.domain.po.User.User;
 import com.oocl.ita.web.domain.vo.RespBean;
 import com.oocl.ita.web.service.SysLoginService;
 import org.springframework.web.bind.annotation.GetMapping;

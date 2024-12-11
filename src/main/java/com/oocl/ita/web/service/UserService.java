@@ -1,6 +1,6 @@
 package com.oocl.ita.web.service;
 
-import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.po.User.User;
 import com.oocl.ita.web.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

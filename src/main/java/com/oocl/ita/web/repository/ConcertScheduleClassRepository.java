@@ -1,6 +1,6 @@
 package com.oocl.ita.web.repository;
 
-import com.oocl.ita.web.domain.po.ConcertScheduleClass;
+import com.oocl.ita.web.domain.po.Concert.ConcertScheduleClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

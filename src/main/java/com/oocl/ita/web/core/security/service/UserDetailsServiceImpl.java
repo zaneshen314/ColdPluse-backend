@@ -1,8 +1,6 @@
 package com.oocl.ita.web.core.security.service;
 
-import com.oocl.ita.web.core.email.EmailType;
-import com.oocl.ita.web.core.email.EmailUtil;
-import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.po.User.User;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
 import com.oocl.ita.web.core.security.domain.LoginUser;
 import com.oocl.ita.web.common.utils.SecurityUtils;

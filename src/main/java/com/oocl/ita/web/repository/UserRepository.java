@@ -1,6 +1,6 @@
 package com.oocl.ita.web.repository;
 
-import com.oocl.ita.web.domain.po.User;
+import com.oocl.ita.web.domain.po.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
