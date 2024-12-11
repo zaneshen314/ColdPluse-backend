@@ -1,4 +1,4 @@
-package com.oocl.ita.web.common.config;
+package com.oocl.ita.web.core.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer
+public class CROSConfig implements WebMvcConfigurer
 {
     /**
      * 跨域配置
