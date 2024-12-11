@@ -8,6 +8,8 @@ public class ConcertScheduleRegBody {
 
     private Long duration;
 
+    private String saleStartTime;
+
     public ConcertScheduleRegBody() {
     }
 
@@ -15,6 +17,7 @@ public class ConcertScheduleRegBody {
         this.concertId = concertId;
         this.startTime = startTime;
         this.duration = duration;
+        this.saleStartTime = saleStartTime;
     }
 
 

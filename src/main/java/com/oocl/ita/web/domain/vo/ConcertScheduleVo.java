@@ -8,5 +8,6 @@ import java.util.List;
 public class ConcertScheduleVo {
     private Integer scheduleId;
     private String strartTime;
+    private String saleStartTime;
     private List<ConcertClassVo> concertClasses;
 }

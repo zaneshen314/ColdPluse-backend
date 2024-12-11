@@ -184,6 +184,7 @@ public class ConcertService {
         concertSessionVo.setStart_time(concertSchedule.getStartTime());
         concertSessionVo.setDuration(concertSchedule.getDuration());
         concertSessionVo.setImgUrl(concert.getImgUrl());
+        concertSessionVo.setSaleStartTime(concertSchedule.getSaleStartTime());
 
         return concertSessionVo;
     }
