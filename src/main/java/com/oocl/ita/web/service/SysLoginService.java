@@ -1,16 +1,14 @@
 package com.oocl.ita.web.service;
 
 
+import com.oocl.ita.web.common.utils.SecurityUtils;
 import com.oocl.ita.web.core.exception.EmailExistException;
-import com.oocl.ita.web.core.exception.InvalidVerificationCodeException;
-import com.oocl.ita.web.core.exception.VerificationCodeMismatchException;
 import com.oocl.ita.web.core.redis.RedisCache;
-import com.oocl.ita.web.domain.bo.RegisterBody;
-import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
 import com.oocl.ita.web.core.security.domain.LoginUser;
 import com.oocl.ita.web.core.security.service.TokenService;
-import com.oocl.ita.web.common.utils.SecurityUtils;
+import com.oocl.ita.web.domain.bo.RegisterBody;
+import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
