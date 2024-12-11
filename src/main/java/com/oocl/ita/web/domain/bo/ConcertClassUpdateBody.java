@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ConcertClassUpdateBody {
-    private String className;
     private Double price;
     private String currency;
 }

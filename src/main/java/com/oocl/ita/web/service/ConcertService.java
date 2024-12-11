@@ -82,9 +82,6 @@ public class ConcertService {
     }
 
     private ConcertClass buildUpdatedConcertClass(ConcertClass concertClass, ConcertClassUpdateBody concertClassBody) {
-        if (concertClassBody.getClassName() != null) {
-            concertClass.setClassName(concertClassBody.getClassName());
-        }
         if (concertClassBody.getCurrency() != null && concertClassBody.getPrice() != null) {
             concertClass.setPriceInUsd(generatePriceInUsd(concertClassBody.getCurrency(), concertClassBody.getPrice()));
             concertClass.setPriceInLocalCurr(concertClassBody.getPrice());
@@ -116,7 +113,7 @@ public class ConcertService {
                 }).toList();
     }
 
-    public ConcertClassVo updateConcertClass(Integer concertId, Integer classId,
+    public ConcertClassVo updateConcertClass(Integer concertId, Integer scheduleId, Integer classId,
                                              ConcertClassUpdateBody concertClassBody) {
         ConcertClass concertClass = concertClassRepository.findById(classId).orElseThrow(() -> new EntityNotExistException("ConcertClass"));
         ConcertClass updatedConcertClass = concertClassRepository.save(buildUpdatedConcertClass(concertClass, concertClassBody));

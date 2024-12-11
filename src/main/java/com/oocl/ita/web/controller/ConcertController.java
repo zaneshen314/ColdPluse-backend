@@ -32,11 +32,12 @@ public class ConcertController {
         return RespBean.success(concertService.listConcertClasses(concertId, scheduleId));
     }
 
-    @PutMapping("/{concertId}/classes/{classId}")
+    @PutMapping("/{concertId}/schedules/{scheduleId}/classes/{classId}")
     public RespBean<ConcertClassVo> updateConcertClass(@PathVariable Integer concertId,
+                                                       @PathVariable Integer scheduleId,
                                                        @PathVariable Integer classId,
                                                        @RequestBody ConcertClassUpdateBody concertClassBody) {
-        return RespBean.success(concertService.updateConcertClass(concertId, classId, concertClassBody));
+        return RespBean.success(concertService.updateConcertClass(concertId, scheduleId, classId, concertClassBody));
     }
     @GetMapping("/{id}/schedules/{scheduleId}")
     public RespBean<ConcertSessionVo> getConcertSession(@PathVariable Integer scheduleId, @PathVariable String id) {
