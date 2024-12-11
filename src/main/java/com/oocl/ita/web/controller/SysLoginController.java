@@ -32,13 +32,9 @@ public class SysLoginController {
      */
     @PostMapping("/login")
     public RespBean<String> login(@RequestBody LoginBody loginBody) {
-        try {
-            // 用户验证
-            String token = loginService.login(loginBody.getEmail(), loginBody.getPassword());
-            return RespBean.success(token);
-        } catch (Exception e) {
-            return RespBean.error(e.getMessage());
-        }
+        // 生成令牌
+        String token = loginService.login(loginBody.getEmail(), loginBody.getPassword());
+        return RespBean.success(token);
     }
 
     /**
