@@ -16,4 +16,5 @@ public class TicketRelease {
     private String endTime;
     private Integer frequency;
     private Integer hour;
+    private String nextPresallTime;
 }

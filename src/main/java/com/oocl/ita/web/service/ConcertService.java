@@ -34,16 +34,20 @@ public class ConcertService {
 
     private ConcertScheduleClassRepository concertScheduleClassRepository;
 
+    private TicketReleaseRepository ticketReleaseRepository;
+
     public ConcertService(ConcertClassRepository concertClassRepository,
                           ConcertScheduleRepository concertScheduleRepository,
                           ConcertRepository concertRepository,
                           VenueRepository venueRepository,
-                          ConcertScheduleClassRepository concertScheduleClassRepository) {
+                          ConcertScheduleClassRepository concertScheduleClassRepository,
+                          TicketReleaseRepository ticketReleaseRepository) {
         this.concertClassRepository = concertClassRepository;
         this.concertScheduleRepository = concertScheduleRepository;
         this.concertRepository = concertRepository;
         this.venueRepository = venueRepository;
         this.concertScheduleClassRepository = concertScheduleClassRepository;
+        this.ticketReleaseRepository = ticketReleaseRepository;
     }
 
     public ConcertClassVo addConcertClass(Integer concertId, ConcertClassBody concertClassBody) {
@@ -128,13 +132,18 @@ public class ConcertService {
         Concert concert = concertRepository.getById(concertSchedule.getConcertId());
 
         Venue venue = venueRepository.findById(concert.getVenueId()).orElseThrow(() -> new EntityNotExistException("Venue"));
-        ;
+
+        TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertScheduleId);
+
+        if (ticketRelease == null) {
+            throw new EntityNotExistException("TicketRelease");
+        }
 
         if (concertSchedule == null) {
             throw new EntityNotExistException("ConcertSchedule");
         }
 
-        return getConcertSessionVo(concertSchedule, concert, venue);
+        return getConcertSessionVo(concertSchedule, concert, venue, ticketRelease);
     }
 
     public List<ConcertSessionVo> getAllConcertSessions() {
@@ -152,7 +161,12 @@ public class ConcertService {
             Venue venue = venueRepository.findById(concert.getVenueId())
                     .orElseThrow(() -> new EntityNotExistException("Venue"));
 
-            return getConcertSessionVo(concertSchedule, concert, venue);
+            TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertSchedule.getId());
+            if (ticketRelease == null) {
+                throw new EntityNotExistException("TicketRelease");
+            }
+
+            return getConcertSessionVo(concertSchedule, concert, venue, ticketRelease);
         }).collect(Collectors.toList());
     }
 
@@ -169,11 +183,16 @@ public class ConcertService {
             Venue venue = venueRepository.findById(concert.getVenueId())
                     .orElseThrow(() -> new EntityNotExistException("Venue"));
 
-            return getConcertSessionVo(concertSchedule, concert, venue);
+            TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertSchedule.getId());
+            if (ticketRelease == null) {
+                throw new EntityNotExistException("TicketRelease");
+            }
+
+            return getConcertSessionVo(concertSchedule, concert, venue, ticketRelease);
         }).collect(Collectors.toList());
     }
 
-    private ConcertSessionVo getConcertSessionVo(ConcertSchedule concertSchedule, Concert concert, Venue venue) {
+    private ConcertSessionVo getConcertSessionVo(ConcertSchedule concertSchedule, Concert concert, Venue venue, TicketRelease ticketRelease) {
         ConcertSessionVo concertSessionVo = new ConcertSessionVo();
         concertSessionVo.setConcertId(concertSchedule.getConcertId());
         concertSessionVo.setScheduleId(concertSchedule.getId());
@@ -185,7 +204,7 @@ public class ConcertService {
         concertSessionVo.setDuration(concertSchedule.getDuration());
         concertSessionVo.setImgUrl(concert.getImgUrl());
         concertSessionVo.setSaleStartTime(concertSchedule.getSaleStartTime());
-
+        concertSessionVo.setNextPresallTime(ticketRelease.getNextPresallTime());
         return concertSessionVo;
     }
 

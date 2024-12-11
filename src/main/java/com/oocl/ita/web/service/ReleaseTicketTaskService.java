@@ -98,6 +98,9 @@ public class ReleaseTicketTaskService {
                     });
                     count++;
                     lastExecutionDate = currentDate;
+                    TicketRelease saveTicketRelease = ticketReleaseRepository.findByConcertScheduleId(concertScheduleId);
+                    saveTicketRelease.setNextPresallTime(count == repeatCount ? currentDate.toString() : currentDate.plusDays(apartDay).toString());
+                    ticketReleaseRepository.save(saveTicketRelease);
                 }
                 if (count >= repeatCount || currentDate.isAfter(endTimeLocalDate)) {
                     cancelReleaseTicketTask(concertScheduleId);
