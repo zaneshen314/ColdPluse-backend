@@ -187,7 +187,10 @@ public class ConcertService {
     }
 
 
-    public ConcertSchedule addCharitySchedule(ConcertScheduleRegBody concertScheduleRegBody) {
-        return concertScheduleRepository.save(new ConcertSchedule(concertScheduleRegBody));
+    public ConcertSchedule addConcertSchedule(ConcertScheduleRegBody concertScheduleRegBody) {
+        ConcertSchedule concertSchedule = concertScheduleRepository.save(new ConcertSchedule(concertScheduleRegBody));
+        concertScheduleClassRepository.saveAll(concertClassRepository.findByConcertId(concertScheduleRegBody.getConcertId())
+                .stream().map(concertClass -> new ConcertScheduleClass(concertSchedule.getId(), concertClass.getId())).toList());
+        return concertSchedule;
     }
 }

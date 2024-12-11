@@ -56,7 +56,7 @@ public class ConcertController {
 
     @PostMapping("/schedules")
     public ConcertSchedule addConcertSchedule(@RequestBody ConcertScheduleRegBody concertScheduleRegBody) {
-        return concertService.addCharitySchedule(concertScheduleRegBody);
+        return concertService.addConcertSchedule(concertScheduleRegBody);
     }
 
 }

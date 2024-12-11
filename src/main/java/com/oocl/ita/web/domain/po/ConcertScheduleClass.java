@@ -14,4 +14,14 @@ public class ConcertScheduleClass {
     private Integer concertScheduleId;
     private Integer concertClassId;
     private Integer availableSeats;
+
+    public ConcertScheduleClass() {
+    }
+
+    public ConcertScheduleClass(Integer concertScheduleId, Integer concertClassId) {
+        this.concertScheduleId = concertScheduleId;
+        this.concertClassId = concertClassId;
+        this.availableSeats = 0;
+    }
+
 }
