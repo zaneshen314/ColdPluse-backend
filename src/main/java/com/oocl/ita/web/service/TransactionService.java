@@ -1,6 +1,7 @@
 package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.common.utils.SecurityUtils;
+import com.oocl.ita.web.core.email.EmailUtil;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.core.exception.NotEnoughTicketsException;
 import com.oocl.ita.web.core.exception.TicketLimitExceededException;
@@ -103,7 +104,7 @@ public class TransactionService {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
 
         if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(zonedDateTime.toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
-            logger.info("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            EmailUtil.testEmail("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
             throw new TicketSaleNotStartedException();
         }
         Integer userId = SecurityUtils.getUserId();
