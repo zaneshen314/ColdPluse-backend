@@ -104,7 +104,7 @@ public class TransactionService {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
 
         if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(zonedDateTime.toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
-            EmailUtil.testEmail("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            EmailUtil.testEmail("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(Date.from(zonedDateTime.toInstant()), "yyyy-MM-dd HH:mm:ss"));
             throw new TicketSaleNotStartedException();
         }
         Integer userId = SecurityUtils.getUserId();
