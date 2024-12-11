@@ -146,6 +146,23 @@ public class ConcertService {
         }).collect(Collectors.toList());
     }
 
+    public List<ConcertSessionVo> getConcertSessionsByConcertId(Integer concertId) {
+        List<ConcertSchedule> concertSchedules = concertScheduleRepository.findByConcertIdOrderByStartTimeAsc(concertId);
+
+        if (concertSchedules.isEmpty()) {
+            throw new EntityNotExistException("No concert schedules found.");
+        }
+
+        return concertSchedules.stream().map(concertSchedule -> {
+            Concert concert = concertRepository.getById(concertSchedule.getConcertId());
+
+            Venue venue = venueRepository.findById(concert.getVenueId())
+                    .orElseThrow(() -> new EntityNotExistException("Venue"));
+
+            return getConcertSessionVo(concertSchedule, concert, venue);
+        }).collect(Collectors.toList());
+    }
+
     private ConcertSessionVo getConcertSessionVo(ConcertSchedule concertSchedule, Concert concert, Venue venue) {
         ConcertSessionVo concertSessionVo = new ConcertSessionVo();
         concertSessionVo.setConcertId(concertSchedule.getConcertId());
