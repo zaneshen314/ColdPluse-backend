@@ -1,5 +1,6 @@
 package com.oocl.ita.web.controller;
 
+import com.oocl.ita.web.common.utils.SecurityUtils;
 import com.oocl.ita.web.domain.bo.CharityEventRegBody;
 import com.oocl.ita.web.domain.bo.CharityEventUpdateBody;
 import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
@@ -50,7 +51,8 @@ public class CharityEventController {
 
     @PostMapping
     public CharityEventParticipation registerCharityEvent(@RequestBody CharityEventRegBody charityEventRegBody) {
-        return charityEventService.registerCharityEvent(charityEventRegBody.getUserId(), charityEventRegBody.getCharityEventId(), charityEventRegBody.isClaimPoint());
+        Integer userId = SecurityUtils.getUserId();
+        return charityEventService.registerCharityEvent(userId, charityEventRegBody.getCharityEventId(), charityEventRegBody.isClaimPoint());
     }
 
     @PutMapping("/status")
@@ -58,8 +60,9 @@ public class CharityEventController {
         return charityEventService.updateCharityEventParticipationStatus(charityEventUpdateBody.getUserId(), charityEventUpdateBody.getCharityEventId(), charityEventUpdateBody.getStatus());
     }
 
-    @DeleteMapping(params = {"eventId", "userId"})
-    public void deleteCharityEventParticipation(@RequestParam Integer eventId, @RequestParam Integer userId) {
+    @DeleteMapping(params = {"eventId"})
+    public void deleteCharityEventParticipation(@RequestParam Integer eventId) {
+        Integer userId = SecurityUtils.getUserId();
         charityEventService.quitCharityEvent(eventId, userId);
     }
 }

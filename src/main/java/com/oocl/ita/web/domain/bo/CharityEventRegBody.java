@@ -2,25 +2,15 @@ package com.oocl.ita.web.domain.bo;
 
 public class CharityEventRegBody {
 
-    private Integer userId;
     private Integer charityEventId;
     private boolean claimPoint;
 
-    public CharityEventRegBody(Integer userId, Integer charityEventId, boolean claimPoint) {
-        this.userId = userId;
+    public CharityEventRegBody(Integer charityEventId, boolean claimPoint) {
         this.charityEventId = charityEventId;
         this.claimPoint = claimPoint;
     }
 
     public CharityEventRegBody() {
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public Integer getCharityEventId() {

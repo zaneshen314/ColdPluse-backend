@@ -1,5 +1,6 @@
 package com.oocl.ita.web.controller;
 
+import com.oocl.ita.web.common.utils.SecurityUtils;
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
 import com.oocl.ita.web.domain.vo.charity.UserCharityEventParticipationResp;
@@ -27,13 +28,15 @@ public class UserController {
         this.charityEventParticipationRepository = charityEventParticipationRepository;
     }
 
-    @GetMapping("/{userId}/cumulatedPoint")
-    public Integer getUserCumulatedPoint(@PathVariable Integer userId) {
+    @GetMapping("/cumulatedPoint")
+    public Integer getUserCumulatedPoint() {
+        Integer userId = SecurityUtils.getUserId();
         return userService.selectUserCumulatedPoint(userId);
     }
 
-    @GetMapping("/{userId}/charity-event-participations")
-    public List<UserCharityEventParticipationResp> getCharityEventParticipationByUserId(@PathVariable Integer userId) {
+    @GetMapping("/charity-event-participations")
+    public List<UserCharityEventParticipationResp> getCharityEventParticipationByUserId() {
+        Integer userId = SecurityUtils.getUserId();
         List<CharityEventParticipation> charityEventParticipations = charityEventService.getCharityEventParticipationByUserid(userId);
 
         return charityEventParticipations
@@ -44,8 +47,9 @@ public class UserController {
                 }).toList();
     }
 
-    @GetMapping("/{userId}/charity-events")
-    public List<Integer> getCharityEventIdsByUserId(@PathVariable Integer userId) {
+    @GetMapping("/charity-events")
+    public List<Integer> getCharityEventIdsByUserId() {
+        Integer userId = SecurityUtils.getUserId();
         return charityEventParticipationRepository.findAllByUserId(userId).stream().map(CharityEventParticipation::getCharityEventId).toList();
     }
 

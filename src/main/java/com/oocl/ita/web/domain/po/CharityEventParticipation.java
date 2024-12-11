@@ -1,5 +1,6 @@
 package com.oocl.ita.web.domain.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.oocl.ita.web.CharityEventParticipationStatus;
 import com.oocl.ita.web.domain.po.key.CharityEventParticipationKey;
 import lombok.Data;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Data
 @Table
 @IdClass(CharityEventParticipationKey.class)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class CharityEventParticipation {
 
     @Id
