@@ -11,4 +11,5 @@ public class ConcertClassVo {
     private Integer capacity;
     private Integer availableSeats;
     private Integer concertId;
+    private Integer concertScheduleId;
 }

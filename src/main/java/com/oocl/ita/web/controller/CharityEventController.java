@@ -2,8 +2,10 @@ package com.oocl.ita.web.controller;
 
 import com.oocl.ita.web.domain.bo.CharityEventRegBody;
 import com.oocl.ita.web.domain.bo.CharityEventUpdateBody;
+import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
+import com.oocl.ita.web.domain.po.ConcertSchedule;
 import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.domain.vo.charity.CharityEventParticipationsResp;
 import com.oocl.ita.web.domain.vo.charity.UserParticipationRecResp;
@@ -60,5 +62,4 @@ public class CharityEventController {
     public void deleteCharityEventParticipation(@RequestParam Integer eventId, @RequestParam Integer userId) {
         charityEventService.quitCharityEvent(eventId, userId);
     }
-
 }

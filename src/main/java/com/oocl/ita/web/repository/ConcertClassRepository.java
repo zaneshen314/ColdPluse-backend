@@ -18,4 +18,5 @@ public interface ConcertClassRepository extends JpaRepository<ConcertClass, Inte
     @Query(value = "SELECT MIN(c.price_in_usd) FROM concert_class c WHERE c.concert_id = :concertId", nativeQuery = true)
     Double getMinPriceByConcertId(@Param("concertId") Integer concertId);
 
+    List<ConcertClass> findByConcertIdAndIdIn(Integer concertId, List<Integer> ids);
 }

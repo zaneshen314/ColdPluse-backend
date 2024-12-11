@@ -2,6 +2,8 @@ package com.oocl.ita.web.controller;
 
 import com.oocl.ita.web.domain.bo.ConcertClassBody;
 import com.oocl.ita.web.domain.bo.ConcertClassUpdateBody;
+import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
+import com.oocl.ita.web.domain.po.ConcertSchedule;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.ConcertSessionVo;
 import com.oocl.ita.web.domain.vo.RespBean;
@@ -25,9 +27,9 @@ public class ConcertController {
         return RespBean.success(concertService.addConcertClass(concertId, concertClassBody));
     }
 
-    @GetMapping("/{concertId}/classes")
-    public RespBean<List<ConcertClassVo>> getConcertClasses(@PathVariable Integer concertId) {
-        return RespBean.success(concertService.listConcertClasses(concertId));
+    @GetMapping("/{concertId}/schedules/{scheduleId}/classes")
+    public RespBean<List<ConcertClassVo>> getConcertClasses(@PathVariable Integer concertId, @PathVariable Integer scheduleId) {
+        return RespBean.success(concertService.listConcertClasses(concertId, scheduleId));
     }
 
     @PutMapping("/{concertId}/classes/{classId}")
@@ -51,6 +53,9 @@ public class ConcertController {
         return RespBean.success(concertService.getConcertSessionsByConcertId(concertId));
     }
 
-
+    @PostMapping("/schedules")
+    public ConcertSchedule addConcertSchedule(@RequestBody ConcertScheduleRegBody concertScheduleRegBody) {
+        return concertService.addCharitySchedule(concertScheduleRegBody);
+    }
 
 }
