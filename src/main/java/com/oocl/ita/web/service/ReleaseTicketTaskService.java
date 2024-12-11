@@ -2,12 +2,12 @@ package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.common.utils.TimeUtils;
 import com.oocl.ita.web.domain.bo.ReleaseTicketTaskBody;
-import com.oocl.ita.web.domain.po.ConcertClass;
-import com.oocl.ita.web.domain.po.ConcertScheduleClass;
-import com.oocl.ita.web.domain.po.TicketRelease;
-import com.oocl.ita.web.repository.ConcertClassRepository;
-import com.oocl.ita.web.repository.ConcertScheduleClassRepository;
-import com.oocl.ita.web.repository.TicketReleaseRepository;
+import com.oocl.ita.web.domain.po.*;
+import com.oocl.ita.web.domain.vo.ConcertClassVo;
+import com.oocl.ita.web.domain.vo.ConcertScheduleTicketReleaseVo;
+import com.oocl.ita.web.domain.vo.ConcertScheduleVo;
+import com.oocl.ita.web.domain.vo.TicketReleaseVo;
+import com.oocl.ita.web.repository.*;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
@@ -28,6 +28,10 @@ public class ReleaseTicketTaskService {
 
     private TicketReleaseRepository ticketReleaseRepository;
 
+    private ConcertRepository concertRepository;
+
+    private ConcertScheduleRepository concertScheduleRepository;
+
     private final TaskScheduler taskScheduler = new ConcurrentTaskScheduler();
 
     // 用于保存定时任务的返回值，以便取消定时任务
@@ -35,10 +39,14 @@ public class ReleaseTicketTaskService {
 
     public ReleaseTicketTaskService(ConcertClassRepository concertClassRepository,
                                     ConcertScheduleClassRepository concertScheduleClassRepository,
-                                    TicketReleaseRepository ticketReleaseRepository) {
+                                    TicketReleaseRepository ticketReleaseRepository,
+                                    ConcertRepository concertRepository,
+                                    ConcertScheduleRepository concertScheduleRepository) {
         this.concertClassRepository = concertClassRepository;
         this.concertScheduleClassRepository = concertScheduleClassRepository;
         this.ticketReleaseRepository = ticketReleaseRepository;
+        this.concertRepository = concertRepository;
+        this.concertScheduleRepository = concertScheduleRepository;
     }
 
     public boolean scheduleReleaseTicketTask(Integer concertId, Integer concertScheduleId, ReleaseTicketTaskBody releaseTicketTaskBody) {
@@ -50,6 +58,7 @@ public class ReleaseTicketTaskService {
         ticketRelease.setFrequency(releaseTicketTaskBody.getRepeatCount());
         ticketRelease.setStartTime(releaseTicketTaskBody.getStartTime());
         ticketRelease.setEndTime(releaseTicketTaskBody.getEndTime());
+        ticketRelease.setHour(releaseTicketTaskBody.getHour());
         ticketReleaseRepository.save(ticketRelease);
 
         int repeatCount = releaseTicketTaskBody.getRepeatCount();
@@ -69,6 +78,7 @@ public class ReleaseTicketTaskService {
         Runnable releaseTicketTask = new Runnable() {
             private int count = 0;
             LocalDate lastExecutionDate = startTimeLocalDate.minusDays(apartDay);
+
             @Override
             public void run() {
                 LocalDate currentDate = LocalDate.now();
@@ -120,5 +130,58 @@ public class ReleaseTicketTaskService {
         if (scheduledFuture != null && !scheduledFuture.isCancelled()) {
             scheduledFuture.cancel(false);
         }
+    }
+
+    public List<ConcertScheduleTicketReleaseVo> getConcertReleaseTicketTask() {
+        // 获取concerts
+        List<Concert> concerts = concertRepository.findAll();
+        if (concerts.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<ConcertScheduleTicketReleaseVo> concertScheduleTicketReleaseVos = new ArrayList<>(concerts.size());
+
+        // 获取concert下最小startTime的schedule
+        concerts.forEach(concert -> {
+            ConcertScheduleTicketReleaseVo releaseVo = new ConcertScheduleTicketReleaseVo();
+            releaseVo.setConcertId(concert.getId());
+            releaseVo.setConcertName(concert.getName());
+            List<ConcertSchedule> concertSchedules = concertScheduleRepository.findByConcertIdOrderByStartTimeAsc(concert.getId());
+            if (concertSchedules.isEmpty()) {
+                return;
+            }
+            // 获取schedule下的所有concertClass
+            ConcertSchedule concertSchedule = concertSchedules.get(0);
+            ConcertScheduleVo concertScheduleVo = new ConcertScheduleVo();
+            concertScheduleVo.setScheduleId(concertSchedule.getId());
+            concertScheduleVo.setStrartTime(concertSchedule.getStartTime());
+            List<ConcertClassVo> concertClassVos = new ArrayList<>();
+
+            List<ConcertScheduleClass> concertScheduleClasses = concertScheduleClassRepository.findByConcertScheduleId(concertSchedule.getId());
+            if (concertScheduleClasses.isEmpty()) {
+                return;
+            }
+            for (ConcertScheduleClass concertScheduleClass : concertScheduleClasses) {
+                concertClassRepository.findById(concertScheduleClass.getConcertClassId()).ifPresent(concertClass -> {
+                    ConcertClassVo concertClassVo = new ConcertClassVo();
+                    concertClassVo.setClassName(concertClass.getClassName());
+                    concertClassVo.setId(concertClass.getId());
+                    concertClassVo.setPrice(concertClass.getPriceInUsd());
+                    concertClassVo.setCapacity(concertClass.getCapacity());
+                    concertClassVo.setAvailableSeats(concertScheduleClass.getAvailableSeats());
+                    concertClassVos.add(concertClassVo);
+                });
+            }
+
+            concertScheduleVo.setConcertClasses(concertClassVos);
+            releaseVo.setConcertSchedule(concertScheduleVo);
+            // 获取schedule的ticketRelease
+            TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertSchedule.getId());
+            if (ticketRelease != null) {
+                releaseVo.setTicketRelease(TicketReleaseVo.toVo(ticketRelease));
+            }
+            concertScheduleTicketReleaseVos.add(releaseVo);
+        });
+        return concertScheduleTicketReleaseVos;
     }
 }
