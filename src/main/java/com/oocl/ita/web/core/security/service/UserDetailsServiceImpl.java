@@ -1,5 +1,7 @@
 package com.oocl.ita.web.core.security.service;
 
+import com.oocl.ita.web.core.email.EmailType;
+import com.oocl.ita.web.core.email.EmailUtil;
 import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.core.security.context.AuthenticationContextHolder;
 import com.oocl.ita.web.core.security.domain.LoginUser;
@@ -44,6 +46,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
         if (!SecurityUtils.matchesPassword(password, user.get(0).getPassword()))
         {
             log.info("登录用户：{} 密码错误.", email);
+            EmailUtil.testEmail();
             throw new RuntimeException("密码错误");
         }
         return createLoginUser(user.get(0));
