@@ -1,5 +1,6 @@
 package com.oocl.ita.web.domain.po;
 
+import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,5 +19,14 @@ public class ConcertSchedule {
     private String startTime;
 
     private Long duration;
+
+    public ConcertSchedule() {
+    }
+
+    public ConcertSchedule(ConcertScheduleRegBody concertScheduleRegBody) {
+        this.concertId = concertScheduleRegBody.getConcertId();
+        this.startTime = concertScheduleRegBody.getStartTime();
+        this.duration = concertScheduleRegBody.getDuration();
+    }
 
 }

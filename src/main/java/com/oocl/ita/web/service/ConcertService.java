@@ -4,6 +4,7 @@ import com.oocl.ita.web.core.exception.ConcertInProgressException;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.domain.bo.ConcertClassBody;
 import com.oocl.ita.web.domain.bo.ConcertClassUpdateBody;
+import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
 import com.oocl.ita.web.domain.po.*;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.ConcertSessionVo;
@@ -43,7 +44,7 @@ public class ConcertService {
         this.concertScheduleClassRepository = concertScheduleClassRepository;
     }
 
-    public ConcertClassVo addConcertClass(Integer concertId,ConcertClassBody concertClassBody) {
+    public ConcertClassVo addConcertClass(Integer concertId, ConcertClassBody concertClassBody) {
         List<ConcertSchedule> concertSchedules = concertScheduleRepository.findByConcertIdOrderByStartTimeAsc(concertId);
         if (concertSchedules == null || concertSchedules.isEmpty()) {
             throw new EntityNotExistException("ConcertSchedule");
@@ -127,7 +128,8 @@ public class ConcertService {
 
         Concert concert = concertRepository.getById(concertSchedule.getConcertId());
 
-        Venue venue = venueRepository.findById(concert.getVenueId()).orElseThrow(() -> new EntityNotExistException("Venue"));;
+        Venue venue = venueRepository.findById(concert.getVenueId()).orElseThrow(() -> new EntityNotExistException("Venue"));
+        ;
 
         if (concertSchedule == null) {
             throw new EntityNotExistException("ConcertSchedule");
@@ -188,4 +190,7 @@ public class ConcertService {
     }
 
 
+    public ConcertSchedule addCharitySchedule(ConcertScheduleRegBody concertScheduleRegBody) {
+        return concertScheduleRepository.save(new ConcertSchedule(concertScheduleRegBody));
+    }
 }
