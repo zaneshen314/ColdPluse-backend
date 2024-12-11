@@ -8,11 +8,13 @@ import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
 import com.oocl.ita.web.domain.po.*;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.ConcertSessionVo;
+import com.oocl.ita.web.domain.vo.ConcertVo;
 import com.oocl.ita.web.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.oocl.ita.web.common.utils.TimeUtils.getCurrentTime;
@@ -185,6 +187,17 @@ public class ConcertService {
 
         return concertSessionVo;
     }
+
+    public ConcertVo getConcertByConcertId(Integer concertId){
+        Concert concert = concertRepository.getById(concertId);
+        Venue venue = venueRepository.findById(concert.getVenueId())
+                .orElseThrow(() -> new EntityNotExistException("Venue"));
+        ConcertVo concertVo = new ConcertVo();
+        concertVo.setId(concertId);
+        concertVo.setVenue(venue);
+        concertVo.setName(concert.getName());
+        return concertVo;
+    };
 
 
     public ConcertSchedule addConcertSchedule(ConcertScheduleRegBody concertScheduleRegBody) {

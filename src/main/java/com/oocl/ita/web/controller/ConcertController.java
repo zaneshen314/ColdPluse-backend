@@ -6,6 +6,7 @@ import com.oocl.ita.web.domain.bo.ConcertScheduleRegBody;
 import com.oocl.ita.web.domain.po.ConcertSchedule;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.ConcertSessionVo;
+import com.oocl.ita.web.domain.vo.ConcertVo;
 import com.oocl.ita.web.domain.vo.RespBean;
 import com.oocl.ita.web.service.ConcertService;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class ConcertController {
         return RespBean.success(concertService.updateConcertClass(concertId, scheduleId, classId, concertClassBody));
     }
     @GetMapping("/{id}/schedules/{scheduleId}")
-    public RespBean<ConcertSessionVo> getConcertSession(@PathVariable Integer scheduleId, @PathVariable String id) {
+    public RespBean<ConcertSessionVo> getConcertScheduleByConcertIdAndScheduleId(@PathVariable Integer scheduleId, @PathVariable String id) {
         return RespBean.success(concertService.getConcertSession(scheduleId));
     }
 
@@ -52,6 +53,11 @@ public class ConcertController {
     @GetMapping("/{concertId}/schedules")
     public RespBean<List<ConcertSessionVo>> getConcertSessionsByConcertId(@PathVariable Integer concertId) {
         return RespBean.success(concertService.getConcertSessionsByConcertId(concertId));
+    }
+
+    @GetMapping("/{concertId}")
+    public RespBean<ConcertVo>getConcertDetailByConcertId(@PathVariable Integer concertId){
+        return RespBean.success(concertService.getConcertByConcertId(concertId));
     }
 
     @PostMapping("/schedules")
