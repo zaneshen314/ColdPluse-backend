@@ -4,16 +4,10 @@ import com.oocl.ita.web.core.exception.ConcertInProgressException;
 import com.oocl.ita.web.core.exception.EntityNotExistException;
 import com.oocl.ita.web.domain.bo.ConcertClassBody;
 import com.oocl.ita.web.domain.bo.ConcertClassUpdateBody;
-import com.oocl.ita.web.domain.po.Concert;
-import com.oocl.ita.web.domain.po.ConcertClass;
-import com.oocl.ita.web.domain.po.ConcertSchedule;
-import com.oocl.ita.web.domain.po.Venue;
+import com.oocl.ita.web.domain.po.*;
 import com.oocl.ita.web.domain.vo.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.ConcertSessionVo;
-import com.oocl.ita.web.repository.ConcertClassRepository;
-import com.oocl.ita.web.repository.ConcertRepository;
-import com.oocl.ita.web.repository.ConcertScheduleRepository;
-import com.oocl.ita.web.repository.VenueRepository;
+import com.oocl.ita.web.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -35,11 +29,18 @@ public class ConcertService {
 
     private VenueRepository venueRepository;
 
-    public ConcertService(ConcertClassRepository concertClassRepository, ConcertScheduleRepository concertScheduleRepository, ConcertRepository concertRepository, VenueRepository venueRepository) {
+    private ConcertScheduleClassRepository concertScheduleClassRepository;
+
+    public ConcertService(ConcertClassRepository concertClassRepository,
+                          ConcertScheduleRepository concertScheduleRepository,
+                          ConcertRepository concertRepository,
+                          VenueRepository venueRepository,
+                          ConcertScheduleClassRepository concertScheduleClassRepository) {
         this.concertClassRepository = concertClassRepository;
         this.concertScheduleRepository = concertScheduleRepository;
         this.concertRepository = concertRepository;
         this.venueRepository = venueRepository;
+        this.concertScheduleClassRepository = concertScheduleClassRepository;
     }
 
     public ConcertClassVo addConcertClass(Integer concertId,ConcertClassBody concertClassBody) {
@@ -100,10 +101,18 @@ public class ConcertService {
         };
     }
 
-    public List<ConcertClassVo> listConcertClasses(Integer concertId) {
-        return concertClassRepository.findByConcertId(concertId).stream()
-                .map(this::buildConcertClassVo)
-                .toList();
+    public List<ConcertClassVo> listConcertClasses(Integer concertId, Integer scheduleId) {
+        List<ConcertScheduleClass> concertScheduleClasses = concertScheduleClassRepository.findByConcertScheduleId(scheduleId);
+        if (concertScheduleClasses == null || concertScheduleClasses.isEmpty()) {
+            throw new EntityNotExistException("ConcertScheduleClass");
+        }
+        return concertClassRepository.findByConcertIdAndIdIn(concertId, concertScheduleClasses.stream()
+                        .map(ConcertScheduleClass::getConcertClassId).toList())
+                .stream().map(concertClass -> {
+                    ConcertClassVo concertClassVo = buildConcertClassVo(concertClass);
+                    concertClassVo.setConcertScheduleId(scheduleId);
+                    return concertClassVo;
+                }).toList();
     }
 
     public ConcertClassVo updateConcertClass(Integer concertId, Integer classId,

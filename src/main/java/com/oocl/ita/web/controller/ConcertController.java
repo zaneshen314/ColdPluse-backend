@@ -25,9 +25,9 @@ public class ConcertController {
         return RespBean.success(concertService.addConcertClass(concertId, concertClassBody));
     }
 
-    @GetMapping("/{concertId}/classes")
-    public RespBean<List<ConcertClassVo>> getConcertClasses(@PathVariable Integer concertId) {
-        return RespBean.success(concertService.listConcertClasses(concertId));
+    @GetMapping("/{concertId}/schedules/{scheduleId}/classes")
+    public RespBean<List<ConcertClassVo>> getConcertClasses(@PathVariable Integer concertId, @PathVariable Integer scheduleId) {
+        return RespBean.success(concertService.listConcertClasses(concertId, scheduleId));
     }
 
     @PutMapping("/{concertId}/classes/{classId}")
