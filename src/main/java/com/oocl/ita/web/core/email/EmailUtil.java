@@ -12,9 +12,10 @@ import java.util.Map;
 
 public class EmailUtil {
 
-    public static void testEmail(){
+    public static void testEmail(String error) {
         Map<String,String> params = new HashMap<>();
         params.put("receiver", "zane.shen@oocl.com");
+        params.put("error", error);
         try {
             callSendEmailWorkFlow(params, EmailType.EMAIL_FLOW);
         } catch (IOException e) {
@@ -53,6 +54,6 @@ public class EmailUtil {
 
     public static void main(String[] args) {
 
-        testEmail();
+        testEmail(null);
     }
 }
