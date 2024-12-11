@@ -3,14 +3,12 @@ package com.oocl.ita.web.controller;
 import com.oocl.ita.web.common.utils.SecurityUtils;
 import com.oocl.ita.web.domain.po.CharityEvent;
 import com.oocl.ita.web.domain.po.CharityEventParticipation;
+import com.oocl.ita.web.domain.po.User;
 import com.oocl.ita.web.domain.vo.charity.UserCharityEventParticipationResp;
 import com.oocl.ita.web.repository.CharityEventParticipationRepository;
 import com.oocl.ita.web.service.CharityEventService;
 import com.oocl.ita.web.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,6 +49,12 @@ public class UserController {
     public List<Integer> getCharityEventIdsByUserId() {
         Integer userId = SecurityUtils.getUserId();
         return charityEventParticipationRepository.findAllByUserId(userId).stream().map(CharityEventParticipation::getCharityEventId).toList();
+    }
+
+    @PutMapping("/cumulatedPoint")
+    public User updateUserCumulatedPoint(@RequestParam Integer cumulatedPointCharged) {
+        Integer userId = SecurityUtils.getUserId();
+        return userService.useUserCumulatedPoint(userId, cumulatedPointCharged);
     }
 
 

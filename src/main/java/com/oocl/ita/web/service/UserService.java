@@ -38,4 +38,14 @@ public class UserService {
     public User getById(Integer userId) {
         return userRepository.getById(userId);
     }
+
+    public User useUserCumulatedPoint(Integer userId, Integer cumulatedPointCharged) {
+        User user = userRepository.getById(userId);
+        if (user.getCumulatedPoint() < cumulatedPointCharged) {
+            throw new IllegalArgumentException("User's cumulated Heartbeats is not enough");
+        }
+        user.setCumulatedPoint(user.getCumulatedPoint() - cumulatedPointCharged);
+        userRepository.save(user);
+        return userRepository.save(user);
+    }
 }
