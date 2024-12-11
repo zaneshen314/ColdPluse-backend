@@ -135,15 +135,15 @@ public class ConcertService {
 
         TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertScheduleId);
 
-        if (ticketRelease == null) {
-            throw new EntityNotExistException("TicketRelease");
-        }
-
         if (concertSchedule == null) {
             throw new EntityNotExistException("ConcertSchedule");
         }
 
-        return getConcertSessionVo(concertSchedule, concert, venue, ticketRelease);
+        ConcertSessionVo concertSessionVo = getConcertSessionVo(concertSchedule, concert, venue);
+        if (ticketRelease != null) {
+            concertSessionVo.setNextPresellTime(ticketRelease.getNextPresellTime());
+        }
+        return concertSessionVo;
     }
 
     public List<ConcertSessionVo> getAllConcertSessions() {
@@ -162,11 +162,11 @@ public class ConcertService {
                     .orElseThrow(() -> new EntityNotExistException("Venue"));
 
             TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertSchedule.getId());
-            if (ticketRelease == null) {
-                throw new EntityNotExistException("TicketRelease");
+            ConcertSessionVo concertSessionVo = getConcertSessionVo(concertSchedule, concert, venue);
+            if (ticketRelease != null) {
+                concertSessionVo.setNextPresellTime(ticketRelease.getNextPresellTime());
             }
-
-            return getConcertSessionVo(concertSchedule, concert, venue, ticketRelease);
+            return concertSessionVo;
         }).collect(Collectors.toList());
     }
 
@@ -184,15 +184,15 @@ public class ConcertService {
                     .orElseThrow(() -> new EntityNotExistException("Venue"));
 
             TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertSchedule.getId());
-            if (ticketRelease == null) {
-                throw new EntityNotExistException("TicketRelease");
+            ConcertSessionVo concertSessionVo = getConcertSessionVo(concertSchedule, concert, venue);
+            if (ticketRelease != null) {
+                concertSessionVo.setNextPresellTime(ticketRelease.getNextPresellTime());
             }
-
-            return getConcertSessionVo(concertSchedule, concert, venue, ticketRelease);
+            return concertSessionVo;
         }).collect(Collectors.toList());
     }
 
-    private ConcertSessionVo getConcertSessionVo(ConcertSchedule concertSchedule, Concert concert, Venue venue, TicketRelease ticketRelease) {
+    private ConcertSessionVo getConcertSessionVo(ConcertSchedule concertSchedule, Concert concert, Venue venue) {
         ConcertSessionVo concertSessionVo = new ConcertSessionVo();
         concertSessionVo.setConcertId(concertSchedule.getConcertId());
         concertSessionVo.setScheduleId(concertSchedule.getId());
@@ -204,7 +204,6 @@ public class ConcertService {
         concertSessionVo.setDuration(concertSchedule.getDuration());
         concertSessionVo.setImgUrl(concert.getImgUrl());
         concertSessionVo.setSaleStartTime(concertSchedule.getSaleStartTime());
-        concertSessionVo.setNextPresellTime(ticketRelease.getNextPresellTime());
         return concertSessionVo;
     }
 
