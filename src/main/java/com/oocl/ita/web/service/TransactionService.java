@@ -55,8 +55,7 @@ public class TransactionService {
     }
 
     public List<TransactionVo> getTransactions() {
-//        Integer userId = SecurityUtils.getUserId();
-        Integer userId = 1;
+        Integer userId = SecurityUtils.getUserId();
         return transactionRepository.findAllByUserId(userId).stream()
                 .map(transaction -> {
                     Integer transactionId = transaction.getId();
@@ -90,10 +89,14 @@ public class TransactionService {
 
     @Transactional
     public TransactionVo orderTicket(OrderTicketBody orderTicketBody) {
-//        Integer userId = SecurityUtils.getUserId();
-        Integer userId = 1;
+        Integer userId = SecurityUtils.getUserId();
         Integer count = ticketRepository.countByConcertScheduleIdAndUserId(orderTicketBody.getConcertScheduleId(), userId);
-        if (count != null && (count + orderTicketBody.getViewers().size() >= 3)) {
+        if (count != null && (count + orderTicketBody.getViewers().size() > 3)) {
+            throw new TicketLimitExceededException();
+        }
+        Integer viewCount = ticketRepository.countByConcertScheduleIdAndIdCardNumIn(orderTicketBody.getConcertScheduleId(),
+                                orderTicketBody.getViewers().stream().map(viewerBody -> viewerBody.getIdCardNum()).toList());
+        if (viewCount != null && viewCount > 0) {
             throw new TicketLimitExceededException();
         }
         // TODO 拿锁
