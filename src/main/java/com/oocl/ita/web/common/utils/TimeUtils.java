@@ -18,7 +18,7 @@ public class TimeUtils {
         }
     }
 
-    public static String dateToString(Date date) {
-        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    public static String dateToString(Date date, String format) {
+        return new SimpleDateFormat(format).format(date);
     }
 }

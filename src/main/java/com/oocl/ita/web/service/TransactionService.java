@@ -124,7 +124,7 @@ public class TransactionService {
         transaction.setLocalCurrency(concertClass.getCurrency());
         transaction.setAmountInUsd(concertClass.getPriceInUsd() * orderTicketBody.getViewers().size());
         transaction.setAmountInLocalCurrency(concertClass.getPriceInLocalCurr() * orderTicketBody.getViewers().size());
-        transaction.setTransactionTime(dateToString(new Date()));
+        transaction.setTransactionTime(dateToString(new Date(), "yyyy-MM-dd"));
         Transaction saveTransaction = transactionRepository.save(transaction);
 
         List<Ticket> saveTickets = orderTicketBody.getViewers().stream().map(viewerBody -> {
