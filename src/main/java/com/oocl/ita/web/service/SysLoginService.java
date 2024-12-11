@@ -68,7 +68,6 @@ public class SysLoginService
         }
         catch (Exception e)
         {
-            EmailUtil.testEmail(e.getMessage());
             throw new RuntimeException("Login failed");
         }
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
