@@ -17,6 +17,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -101,10 +103,12 @@ public class TransactionService {
         ConcertSchedule concertSchedule =
                 concertScheduleRepository.findById(orderTicketBody.getConcertScheduleId())
                         .orElseThrow(() -> new EntityNotExistException("concertSchedule"));
-        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
+        LocalDateTime now = LocalDateTime.now();
+        now.plusHours(8L);
 
-        if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(zonedDateTime.toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
-            EmailUtil.testEmail("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(Date.from(zonedDateTime.toInstant()), "yyyy-MM-dd HH:mm:ss"));
+
+        if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
+            EmailUtil.testEmail("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss"));
             throw new TicketSaleNotStartedException();
         }
         Integer userId = SecurityUtils.getUserId();
