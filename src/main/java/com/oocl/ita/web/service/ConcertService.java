@@ -193,7 +193,7 @@ public class ConcertService {
         concertSessionVo.setName(concert.getName());
         concertSessionVo.setMaxPrice(concertClassRepository.getMaxPriceByConcertId(concertSchedule.getConcertId()));
         concertSessionVo.setMinPrice(concertClassRepository.getMinPriceByConcertId(concertSchedule.getConcertId()));
-        concertSessionVo.setVenue(venue.getName() + Comma + venue.getLocation() + Comma + venue.getState());
+        concertSessionVo.setVenue(venue.getName() + Comma + venue.getLocation());
         concertSessionVo.setStart_time(concertSchedule.getStartTime());
         concertSessionVo.setDuration(concertSchedule.getDuration());
         concertSessionVo.setImgUrl(concert.getImgUrl());
