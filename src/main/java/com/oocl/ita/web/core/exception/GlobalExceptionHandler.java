@@ -41,29 +41,36 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(ConcertInProgressException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RespBean<String> handleConcertInProgressException(ConcertInProgressException ignored)
+    public RespBean<String> handleConcertInProgressException(ConcertInProgressException e)
     {
-        return RespBean.error(CoreErrorResponse.CONCERT_IN_PROGRESS_ERROR.getCode(), CoreErrorResponse.CONCERT_IN_PROGRESS_ERROR.getMessage());
+        return RespBean.error(CoreErrorResponse.CONCERT_IN_PROGRESS_ERROR.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(TicketLimitExceededException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RespBean<String> handleTicketLimitExceededException(TicketLimitExceededException ignored)
+    public RespBean<String> handleTicketLimitExceededException(TicketLimitExceededException e)
     {
-        return RespBean.error(CoreErrorResponse.TICKET_LIMIT_EXCEEDED_ERROR.getCode(), CoreErrorResponse.TICKET_LIMIT_EXCEEDED_ERROR.getMessage());
+        return RespBean.error(CoreErrorResponse.TICKET_LIMIT_EXCEEDED_ERROR.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(NotEnoughTicketsException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RespBean<String> handleNotEnoughTicketsException(NotEnoughTicketsException ignored)
+    public RespBean<String> handleNotEnoughTicketsException(NotEnoughTicketsException e)
     {
-        return RespBean.error(CoreErrorResponse.NOT_ENOUGH_TICKETS_ERROR.getCode(), CoreErrorResponse.NOT_ENOUGH_TICKETS_ERROR.getMessage());
+        return RespBean.error(CoreErrorResponse.NOT_ENOUGH_TICKETS_ERROR.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(TicketSaleNotStartedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public RespBean<String> handleTicketSaleNotStartedException(TicketSaleNotStartedException ignored)
+    public RespBean<String> handleTicketSaleNotStartedException(TicketSaleNotStartedException e)
     {
-        return RespBean.error(CoreErrorResponse.TICKET_SALE_NOT_STARTED.getCode(), CoreErrorResponse.TICKET_SALE_NOT_STARTED.getMessage());
+        return RespBean.error(CoreErrorResponse.TICKET_SALE_NOT_STARTED.getCode(), e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public RespBean<String> handleException(Exception e)
+    {
+        return RespBean.error(CoreErrorResponse.UNKNOWN_ERROR.getCode(), e.getMessage());
     }
 }

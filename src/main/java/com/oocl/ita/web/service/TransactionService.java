@@ -112,7 +112,7 @@ public class TransactionService {
         Integer viewCount = ticketRepository.countByConcertScheduleIdAndIdCardNumIn(orderTicketBody.getConcertScheduleId(),
                 orderTicketBody.getViewers().stream().map(ViewerBody::getIdCardNum).toList());
         if (viewCount != null && viewCount > 0) {
-            throw new TicketLimitExceededException("Each ID card can only purchase one ticket per concert.");
+            throw new TicketLimitExceededException("Each ID card can only purchase one ticket per concert");
         }
         // TODO 拿锁
 
