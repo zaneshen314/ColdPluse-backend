@@ -105,18 +105,12 @@ public class ConcertService {
         };
     }
 
-    public List<ConcertClassVo> listConcertClasses(Integer concertId, Integer scheduleId) {
-        List<ConcertScheduleClass> concertScheduleClasses = concertScheduleClassRepository.findByConcertScheduleId(scheduleId);
-        if (concertScheduleClasses == null || concertScheduleClasses.isEmpty()) {
-            throw new EntityNotExistException("ConcertScheduleClass");
+    public List<ConcertClassVo> listConcertClasses(Integer concertId) {
+        List<ConcertClass> concertClasses = concertClassRepository.findByConcertId(concertId);
+        if (concertClasses == null || concertClasses.isEmpty()) {
+            throw new EntityNotExistException("ConcertClass");
         }
-        return concertClassRepository.findByConcertIdAndIdIn(concertId, concertScheduleClasses.stream()
-                        .map(ConcertScheduleClass::getConcertClassId).toList())
-                .stream().map(concertClass -> {
-                    ConcertClassVo concertClassVo = buildConcertClassVo(concertClass);
-                    concertClassVo.setConcertScheduleId(scheduleId);
-                    return concertClassVo;
-                }).toList();
+        return concertClasses.stream().map(this::buildConcertClassVo).toList();
     }
 
     public ConcertClassVo updateConcertClass(Integer concertId, Integer scheduleId, Integer classId,
@@ -228,5 +222,9 @@ public class ConcertService {
 
     public List<Concert> getAllConcerts() {
         return concertRepository.findAll();
+    }
+
+    public List<ConcertScheduleClass> listConcertScheduleClasses(Integer scheduleId) {
+        return concertScheduleClassRepository.findByConcertScheduleId(scheduleId).stream().toList();
     }
 }
