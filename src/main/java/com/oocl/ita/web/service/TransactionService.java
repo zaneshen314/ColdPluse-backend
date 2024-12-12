@@ -104,7 +104,6 @@ public class TransactionService {
 
 
         if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
-            EmailUtil.testEmail("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss"));
             throw new TicketSaleNotStartedException();
         }
         Integer userId = SecurityUtils.getUserId();
@@ -115,7 +114,7 @@ public class TransactionService {
         Integer viewCount = ticketRepository.countByConcertScheduleIdAndIdCardNumIn(orderTicketBody.getConcertScheduleId(),
                 orderTicketBody.getViewers().stream().map(ViewerBody::getIdCardNum).toList());
         if (viewCount != null && viewCount > 0) {
-            throw new TicketLimitExceededException();
+            throw new TicketLimitExceededException("Each ID card can only purchase one ticket per concert.");
         }
         // TODO 拿锁
 
