@@ -5,7 +5,7 @@ import com.oocl.ita.web.domain.bo.Concert.ConcertClassUpdateBody;
 import com.oocl.ita.web.domain.bo.Concert.ConcertScheduleRegBody;
 import com.oocl.ita.web.domain.po.Concert.Concert;
 import com.oocl.ita.web.domain.po.Concert.ConcertSchedule;
-import com.oocl.ita.web.domain.po.ConcertScheduleClass;
+import com.oocl.ita.web.domain.po.Concert.ConcertScheduleClass;
 import com.oocl.ita.web.domain.vo.*;
 import com.oocl.ita.web.domain.vo.Concert.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.Concert.ConcertSessionVo;
