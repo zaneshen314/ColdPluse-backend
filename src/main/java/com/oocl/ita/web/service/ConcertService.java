@@ -216,7 +216,7 @@ public class ConcertService {
         concertVo.setVenue(venue);
         concertVo.setName(concert.getName());
         return concertVo;
-    };
+    }
 
 
     public ConcertSchedule addConcertSchedule(ConcertScheduleRegBody concertScheduleRegBody) {
