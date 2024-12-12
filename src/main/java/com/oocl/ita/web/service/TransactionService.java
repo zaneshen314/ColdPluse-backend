@@ -1,11 +1,7 @@
 package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.common.utils.SecurityUtils;
-import com.oocl.ita.web.core.email.EmailUtil;
-import com.oocl.ita.web.core.exception.EntityNotExistException;
-import com.oocl.ita.web.core.exception.NotEnoughTicketsException;
-import com.oocl.ita.web.core.exception.TicketLimitExceededException;
-import com.oocl.ita.web.core.exception.TicketSaleNotStartedException;
+import com.oocl.ita.web.core.exception.*;
 import com.oocl.ita.web.domain.bo.Ticket.OrderTicketBody;
 import com.oocl.ita.web.domain.bo.Ticket.ViewerBody;
 import com.oocl.ita.web.domain.po.Concert.*;
@@ -102,9 +98,11 @@ public class TransactionService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime time = now.plusHours(8L);
 
-
         if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
             throw new TicketSaleNotStartedException();
+        }
+        if (concertSchedule.getStartTime().compareTo(dateToString(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss")) < 0) {
+            throw new ConcertInProgressException();
         }
         Integer userId = SecurityUtils.getUserId();
         Integer count = ticketRepository.countByConcertScheduleIdAndUserId(orderTicketBody.getConcertScheduleId(), userId);
