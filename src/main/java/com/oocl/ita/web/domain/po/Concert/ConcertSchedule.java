@@ -29,6 +29,7 @@ public class ConcertSchedule {
         this.concertId = concertScheduleRegBody.getConcertId();
         this.startTime = concertScheduleRegBody.getStartTime();
         this.duration = concertScheduleRegBody.getDuration();
+        this.saleStartTime = concertScheduleRegBody.getSaleStartTime();
     }
 
 }
