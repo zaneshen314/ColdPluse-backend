@@ -5,10 +5,11 @@ import com.oocl.ita.web.domain.bo.Concert.ConcertClassUpdateBody;
 import com.oocl.ita.web.domain.bo.Concert.ConcertScheduleRegBody;
 import com.oocl.ita.web.domain.po.Concert.Concert;
 import com.oocl.ita.web.domain.po.Concert.ConcertSchedule;
+import com.oocl.ita.web.domain.po.ConcertScheduleClass;
+import com.oocl.ita.web.domain.vo.*;
 import com.oocl.ita.web.domain.vo.Concert.ConcertClassVo;
 import com.oocl.ita.web.domain.vo.Concert.ConcertSessionVo;
 import com.oocl.ita.web.domain.vo.Concert.ConcertVo;
-import com.oocl.ita.web.domain.vo.RespBean;
 import com.oocl.ita.web.service.ConcertService;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +35,9 @@ public class ConcertController {
         return RespBean.success(concertService.addConcertClass(concertId, concertClassBody));
     }
 
-    @GetMapping("/{concertId}/schedules/{scheduleId}/classes")
-    public RespBean<List<ConcertClassVo>> getConcertClasses(@PathVariable Integer concertId, @PathVariable Integer scheduleId) {
-        return RespBean.success(concertService.listConcertClasses(concertId, scheduleId));
+    @GetMapping("/{concertId}/classes")
+    public RespBean<List<ConcertClassVo>> getConcertClasses(@PathVariable Integer concertId) {
+        return RespBean.success(concertService.listConcertClasses(concertId));
     }
 
     @PutMapping("/{concertId}/schedules/{scheduleId}/classes/{classId}")
@@ -69,6 +70,11 @@ public class ConcertController {
     @PostMapping("/schedules")
     public ConcertSchedule addConcertSchedule(@RequestBody ConcertScheduleRegBody concertScheduleRegBody) {
         return concertService.addConcertSchedule(concertScheduleRegBody);
+    }
+
+    @GetMapping("/{concertId}/schedules/{scheduleId}/concert_schedule_classes")
+    public RespBean<List<ConcertScheduleClass>> getAllConcertScheduleClassesByConcertScheduleId(@PathVariable Integer concertId, @PathVariable Integer scheduleId) {
+        return RespBean.success(concertService.listConcertScheduleClasses(scheduleId));
     }
 
 }
