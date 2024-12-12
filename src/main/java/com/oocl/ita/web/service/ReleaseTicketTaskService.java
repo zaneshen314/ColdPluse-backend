@@ -107,6 +107,9 @@ public class ReleaseTicketTaskService {
                     ticketReleaseRepository.save(saveTicketRelease);
                 }
                 if (count >= repeatCount || currentDate.isAfter(endTimeLocalDate)) {
+                    TicketRelease saveTicketRelease = ticketReleaseRepository.findByConcertScheduleId(concertScheduleId);
+                    saveTicketRelease.setFrequency(-1);
+                    ticketReleaseRepository.save(saveTicketRelease);
                     cancelReleaseTicketTask(concertScheduleId);
                 }
             }
@@ -145,7 +148,6 @@ public class ReleaseTicketTaskService {
         if (concerts.isEmpty()) {
             return Collections.emptyList();
         }
-
         List<ConcertScheduleTicketReleaseVo> concertScheduleTicketReleaseVos = new ArrayList<>(concerts.size());
 
         // 获取concert下最小startTime的schedule
@@ -199,6 +201,17 @@ public class ReleaseTicketTaskService {
                 concertScheduleClassRepository.save(concertScheduleClass);
             });
         });
+        TicketRelease ticketRelease = ticketReleaseRepository.findByConcertScheduleId(concertScheduleId);
+        if (ticketRelease == null) {
+            ticketRelease = new TicketRelease();
+            ticketRelease.setConcertScheduleId(concertScheduleId);
+            ticketRelease.setHour(0);
+            ticketRelease.setStartTime(TimeUtils.dateToString(new Date(), "yyyy-MM-dd"));
+            ticketRelease.setEndTime(TimeUtils.dateToString(new Date(), "yyyy-MM-dd"));
+            ticketRelease.setNextPresellTime(TimeUtils.dateToString(new Date(), "yyyy-MM-dd"));
+        }
+        ticketRelease.setFrequency(-1);
+        ticketReleaseRepository.save(ticketRelease);
         return true;
     }
 }
