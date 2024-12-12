@@ -1,7 +1,6 @@
 package com.oocl.ita.web.service;
 
 import com.oocl.ita.web.common.utils.SecurityUtils;
-import com.oocl.ita.web.core.email.EmailUtil;
 import com.oocl.ita.web.core.exception.*;
 import com.oocl.ita.web.domain.bo.Ticket.OrderTicketBody;
 import com.oocl.ita.web.domain.bo.Ticket.ViewerBody;
@@ -99,7 +98,6 @@ public class TransactionService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime time = now.plusHours(8L);
 
-        EmailUtil.testEmail("saleStartTime: " + concertSchedule.getSaleStartTime() + " now: " + dateToString(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss"));
         if (concertSchedule.getSaleStartTime().compareTo(dateToString(Date.from(time.atZone(ZoneId.systemDefault()).toInstant()), "yyyy-MM-dd HH:mm:ss")) > 0) {
             throw new TicketSaleNotStartedException();
         }
